@@ -4,5 +4,7 @@
     <string name="app_name">Veggie Crush</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_highscores">Highscores</string>
+    <string name="title_activity_game">Game</string>
 
 </resources>
