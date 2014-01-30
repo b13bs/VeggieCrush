@@ -23,3 +23,7 @@ Pour les dialog (popup), exemple:
 	final Dialog d = builder.create();
 	d.show();
 </pre>
+
+
+Btw ya un intégration Git dans Eclipse pis ca semble garder en mémoire le user/password :) Cherchez "EGit" dans le Eclipse Marketplace!
+Une fois installé tu fais Right-Click > Team > tous les options de git :)
