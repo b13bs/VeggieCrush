@@ -3,6 +3,8 @@ VeggieCrush
 
 Pour les highscores: SharedPreferences?
 	http://developer.android.com/guide/topics/data/data-storage.html#pref
+	
+--------------------------------------------------------------------------------
 
 Pour les dialog (popup), exemple:
 <pre>
@@ -24,6 +26,7 @@ Pour les dialog (popup), exemple:
 	d.show();
 </pre>
 
+--------------------------------------------------------------------------------
 
-Btw ya un intégration Git dans Eclipse pis ca semble garder en mémoire le user/password :) Cherchez "EGit" dans le Eclipse Marketplace!
-Une fois installé tu fais Right-Click > Team > tous les options de git :)
+Btw ya un intï¿½gration Git dans Eclipse pis ca semble garder en mï¿½moire le user/password :) Cherchez "EGit" dans le Eclipse Marketplace!
+Une fois installï¿½ tu fais Right-Click > Team > tous les options de git :)
