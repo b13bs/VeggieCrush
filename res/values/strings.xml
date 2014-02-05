@@ -13,5 +13,8 @@
     <string name="blitz">Blitz</string>
     <string name="time">Temps</string>
     <string name="move">Déplacement</string>
+    <string name="play_again">Rejouer</string>
+    <string name="other_mode">Autre mode</string>
+    <string name="quit">Quitter</string>
 
 </resources>
