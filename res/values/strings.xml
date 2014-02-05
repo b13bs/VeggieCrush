@@ -6,5 +6,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_highscores">Highscores</string>
     <string name="title_activity_game">Game</string>
+    <string name="chain">Chaines</string>
+    <string name="highscores">Scores</string>
+    <string name="mode">Mode</string>
+    <string name="time_Attack">Time Attack</string>
+    <string name="blitz">Blitz</string>
+    <string name="time">Temps</string>
+    <string name="move">Déplacement</string>
 
 </resources>
