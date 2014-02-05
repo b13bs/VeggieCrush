@@ -28,5 +28,10 @@ Pour les dialog (popup), exemple:
 
 --------------------------------------------------------------------------------
 
-Btw ya un int�gration Git dans Eclipse pis ca semble garder en m�moire le user/password :) Cherchez "EGit" dans le Eclipse Marketplace!
-Une fois install� tu fais Right-Click > Team > tous les options de git :)
+Btw ya un integration Git dans Eclipse pis ca semble garder en memoire le user/password :) Cherchez "EGit" dans le Eclipse Marketplace!
+Une fois installé tu fais Right-Click > Team > tous les options de git :)
+
+--------------------------------------------------------------------------------
+
+Liens qui peuvent aider pour la grille de jeu?
+http://blahti.wordpress.com/2013/03/04/drag-drop-for-gridview-v4/
