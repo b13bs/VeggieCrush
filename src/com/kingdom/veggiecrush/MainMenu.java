@@ -59,7 +59,7 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 				break;
 				
 			case R.id.btnScores:
-				Intent intentScores = new Intent(this, Game.class);
+				Intent intentScores = new Intent(this, Highscores.class);
 				this.startActivity(intentScores);
 				break;
 				
