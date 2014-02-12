@@ -36,6 +36,7 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 		btnExit.setOnClickListener(this);
 		switchSound = (Switch) findViewById(R.id.switchSound);
 		switchSound.setOnCheckedChangeListener(this);
+		switchSound.setChecked(Settings.isSoundOn(this));
 	}
 
 	@Override
@@ -72,11 +73,11 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 	{
 		if (isOn)
 		{
-			Toast.makeText(this, "TODO: sound on", Toast.LENGTH_SHORT).show();
+			Settings.setSoundOn(getApplicationContext(), true);
 		}
 		else
 		{
-			Toast.makeText(this, "TODO: sound off", Toast.LENGTH_SHORT).show();
+			Settings.setSoundOn(getApplicationContext(), false);
 		}
 	}
 	
