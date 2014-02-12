@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
@@ -114,6 +116,9 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 				});
 	    final Dialog d = builder.create();
 	    d.show();
+	    input.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
 	}
 
 }

@@ -117,5 +117,11 @@
         android:text="10"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="20sp" />
-
+    
+    <com.kingdom.veggiecrush.GameView
+        android:id="@+id/gameView"
+        android:layout_below="@+id/txtScore"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>
