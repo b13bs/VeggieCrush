@@ -116,9 +116,6 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 				});
 	    final Dialog d = builder.create();
 	    d.show();
-	    input.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
 	}
 
 }
