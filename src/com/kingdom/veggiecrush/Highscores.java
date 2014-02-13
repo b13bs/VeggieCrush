@@ -38,8 +38,7 @@ public class Highscores extends Activity implements OnClickListener {
 				break;
 				
 			case R.id.btnQuit:
-				Intent intentQuit = new Intent(this, MainMenu.class);
-				this.startActivity(intentQuit);
+				finish();
 				break;
 		}
 		
