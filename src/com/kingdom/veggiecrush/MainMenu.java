@@ -41,6 +41,7 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 		switchSound.setChecked(Settings.isSoundOn(this));
 	}
 
+
 	@Override
 	public void onClick(View v)
 	{
@@ -48,13 +49,13 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 		{
 			case R.id.btnTimeAttack:
 				Intent intentTimeAttack = new Intent(this, Game.class);
-				intentTimeAttack.putExtra(Settings.EXTRA_GAME_MODE, Settings.GAME_MODE.TIME_ATTACK);
+				intentTimeAttack.putExtra(Settings.EXTRA_GAME_MODE, Settings.GameMode.TIME_ATTACK);
 				promptPlayerNameDialog(intentTimeAttack);
 				break;
 			
 			case R.id.btnBlitz:
 				Intent intentBlitz = new Intent(this, Game.class);
-				intentBlitz.putExtra(Settings.EXTRA_GAME_MODE, Settings.GAME_MODE.BLITZ);
+				intentBlitz.putExtra(Settings.EXTRA_GAME_MODE, Settings.GameMode.BLITZ);
 				promptPlayerNameDialog(intentBlitz);
 				break;
 				
@@ -98,12 +99,17 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 				    	String playerName = input.getText().toString();
 				    	if (playerName.length() < 2)
 				    	{
+				    		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+				    		imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
 				    		Toast.makeText(getApplicationContext(), "Please enter a minimum of 2 caracters", Toast.LENGTH_SHORT).show();
 				    	}
 				    	else
 				    	{
 				    		targetIntent.putExtra(Settings.EXTRA_PLAYER_NAME, playerName);
 				    		startActivity(targetIntent);
+				    		
+				    		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+				    		imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
 				    	}
 				    	dialog.dismiss();
 				    }

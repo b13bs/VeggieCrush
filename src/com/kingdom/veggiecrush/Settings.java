@@ -2,17 +2,20 @@ package com.kingdom.veggiecrush;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class Settings {
 	
 	public static final String EXTRA_GAME_MODE = "GAME_MODE";
-	public static enum GAME_MODE { TIME_ATTACK, BLITZ };
+	public static enum GameMode { TIME_ATTACK, BLITZ };
 	
 	public static final String EXTRA_PLAYER_NAME = "PLAYER_NAME";
 
 	public static final String APP_OPTIONS_PREFS = "APP_OPTIONS_PREFS";
 	public static final String OPTION_SOUND = "OPTION_SOUND";
 	
+	public static Bitmap bitmapTomato = null;
 	
 	public static boolean isSoundOn(Context c)
 	{
@@ -29,4 +32,8 @@ public class Settings {
 	    editor.commit();
 	}
 	
+	public static void loadBitmaps(Context c)
+	{
+		bitmapTomato = BitmapFactory.decodeResource(c.getResources(), R.drawable.tomato);
+	}
 }
