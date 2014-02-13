@@ -45,10 +45,10 @@ public class GameViewThread extends Thread {
 				}
 			}
 			
-			sleepTime = startTime - System.currentTimeMillis();
+			sleepTime = 16 - (System.currentTimeMillis() - startTime);
 			if (sleepTime > 0 )
 			{
-				try { Thread.sleep(16); } catch (Exception e) { e.printStackTrace(); }
+				try { Thread.sleep(sleepTime); } catch (Exception e) { e.printStackTrace(); }
 			}
 		}
 	}

@@ -15,34 +15,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	Handler mHandler = new Handler();
 	GameViewThread mThread;
 
+	Veggie[][] grid = new Veggie[8][8];
 	
 	public GameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
 		getHolder().addCallback(this);
+		
 	}
 	
-	@Override 
-    public void onDraw(Canvas canvas) {
-		if (canvas != null)
-		{
-			canvas.drawColor(Color.GREEN);
-		}
-    }
-	
-	@Override
-	public boolean onTouchEvent(MotionEvent e)
-	{
-		if (e.getAction() == MotionEvent.ACTION_DOWN)
-		{
-			Toast.makeText(getContext(), "Can't touch this!", Toast.LENGTH_SHORT).show();
-		}
-		return false;
-	}
-	
-
-	
-
 	@Override
 	public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
 		// rien
@@ -71,6 +52,39 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 				System.err.println("Meh..");
 			}
 		}
+	}
+	
+	@Override 
+    public void onDraw(Canvas canvas) {
+		if (canvas != null)
+		{
+			canvas.drawColor(Color.GREEN);
+			
+			//TODO: dessiner la grille de légumes
+		}
+    }
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent e)
+	{
+		if (e.getAction() == MotionEvent.ACTION_DOWN)
+		{
+			Toast.makeText(getContext(), "Can't touch this!", Toast.LENGTH_SHORT).show();
+			
+			//TODO: stuff
+		}
+		return false;
+	}
+	
+	private Veggie getVeggieFromPos(int posX, int posY)
+	{
+		//TODO:
+		return null;
+	}
+	
+	private void getPosFromIndex(int i, int j)
+	{
+		//TODO: retourner la position
 	}
 	
 }

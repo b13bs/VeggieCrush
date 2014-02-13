@@ -3,9 +3,11 @@ package com.kingdom.veggiecrush;
 import com.kingdom.veggiecrush.R.string;
 
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -42,6 +44,15 @@ public class Game extends Activity implements OnClickListener
 		
 		TextView txtCountdown = (TextView) findViewById(R.id.txtCountdown);
 		txtCountdown.setText("0");
+		
+		// Redimensionner la zone de jeu pour être carré et remplir la largeur de l'écran
+		Display display = getWindowManager().getDefaultDisplay(); 
+		int width = display.getWidth();
+		
+		GameView gv = (GameView) findViewById(R.id.gameView);
+		LayoutParams params = (LayoutParams) gv.getLayoutParams();
+		params.width = width - 40;
+		params.height = width - 40;
 		
 		playGame();
 	}
