@@ -15,6 +15,12 @@ public class Settings {
 	public static final String APP_OPTIONS_PREFS = "APP_OPTIONS_PREFS";
 	public static final String OPTION_SOUND = "OPTION_SOUND";
 	
+	public static Bitmap bitmapBroccoli = null;
+	public static Bitmap bitmapCarrot = null;
+	public static Bitmap bitmapEggplant = null;
+	public static Bitmap bitmapGreenPepper = null;
+	public static Bitmap bitmapHotPepper = null;
+	public static Bitmap bitmapPotato = null;
 	public static Bitmap bitmapTomato = null;
 	
 	public static boolean isSoundOn(Context c)
@@ -34,6 +40,12 @@ public class Settings {
 	
 	public static void loadBitmaps(Context c)
 	{
+		bitmapBroccoli = BitmapFactory.decodeResource(c.getResources(), R.drawable.broccoli);
+		bitmapCarrot = BitmapFactory.decodeResource(c.getResources(), R.drawable.carrot);
+		bitmapEggplant = BitmapFactory.decodeResource(c.getResources(), R.drawable.eggplant);
+		bitmapGreenPepper = BitmapFactory.decodeResource(c.getResources(), R.drawable.green_pepper);
+		bitmapHotPepper = BitmapFactory.decodeResource(c.getResources(), R.drawable.hot_pepper);
+		bitmapPotato = BitmapFactory.decodeResource(c.getResources(), R.drawable.potato);
 		bitmapTomato = BitmapFactory.decodeResource(c.getResources(), R.drawable.tomato);
 	}
 }

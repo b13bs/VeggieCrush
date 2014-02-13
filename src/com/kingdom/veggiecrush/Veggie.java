@@ -6,7 +6,7 @@ import android.graphics.Rect;
 
 public class Veggie {
 	
-	public static enum VeggieKind { CAROT, TOMATO, ONION };
+	public static enum VeggieKind { BROCOLI, CARROT, EGGPLANT, GREEN_PEPPER, HOT_PEPPER, POTATO, TOMATO };
 	
 	VeggieKind kind;
 	Bitmap bitmap;
@@ -14,8 +14,33 @@ public class Veggie {
 	
 	public Veggie (Context c, VeggieKind kind)
 	{
-		//TODO: charger le bon bitmap selon la sorte de légume
-		bitmap = Settings.bitmapTomato;
+		// Assigner le bon bitmap en fonction deu type de légume recu
+		switch (kind)
+		{
+		case BROCOLI:
+			bitmap = Settings.bitmapBroccoli;
+			break;
+		case CARROT:
+			bitmap = Settings.bitmapCarrot;
+			break;
+		case EGGPLANT:
+			bitmap = Settings.bitmapEggplant;
+			break;
+		case GREEN_PEPPER:
+			bitmap = Settings.bitmapGreenPepper;
+			break;
+		case HOT_PEPPER:
+			bitmap = Settings.bitmapHotPepper;
+			break;
+		case POTATO:
+			bitmap = Settings.bitmapPotato;
+			break;
+		case TOMATO:
+			bitmap = Settings.bitmapTomato;
+			break;
+		}
+
+		// Le rectangle qui sera utilisé pour dessiner
 		bitmapRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
 	}
 }

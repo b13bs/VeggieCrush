@@ -1,5 +1,7 @@
 package com.kingdom.veggiecrush;
 
+import java.util.Random;
+
 import com.kingdom.veggiecrush.Veggie.VeggieKind;
 
 import android.content.Context;
@@ -73,11 +75,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	public void initGameGrid()
 	{
 		// On remplie la grille
+		Random rand = new Random();
 		for (int j = 0; j < GRID_SIZE; ++j)
 		{
 			for (int i = 0; i < GRID_SIZE; ++i)
 			{
-				grid[i][j] = new Veggie(getContext(), VeggieKind.TOMATO);
+				// TODO: Verifier qu'il n'y a pas 3 légumes pareils en ligne..
+				grid[i][j] = new Veggie(getContext(), VeggieKind.values()[rand.nextInt(VeggieKind.values().length)]);
 			}
 		}
 	}
