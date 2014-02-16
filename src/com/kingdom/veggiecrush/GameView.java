@@ -49,6 +49,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public void surfaceCreated(SurfaceHolder arg0) {
+		// On crée et enregistre le thread pour rafraichir la surface de jeu
 		mThread = new GameViewThread(this);
 		mThread.setRunning(true);
 		mThread.start();
@@ -56,6 +57,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder arg0) {
+		// On arrête le thread de rafraichissement
 		boolean success = false;
 		mThread.setRunning(false);
 		while (!success)
@@ -74,13 +76,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	
 	public void initGameGrid()
 	{
-		// On remplie la grille
+		// On remplie la grille pour commencer une nouvelle partie
 		Random rand = new Random();
 		for (int j = 0; j < GRID_SIZE; ++j)
 		{
 			for (int i = 0; i < GRID_SIZE; ++i)
 			{
 				// TODO: Verifier qu'il n'y a pas 3 légumes pareils en ligne..
+				// + autres règles pour le grille initiale?
 				grid[i][j] = new Veggie(getContext(), VeggieKind.values()[rand.nextInt(VeggieKind.values().length)]);
 			}
 		}
@@ -90,9 +93,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void onDraw(Canvas canvas) {
 		if (canvas != null)
 		{
+			// On dessine l'arrière plan
 			canvas.drawColor(Color.rgb(46, 97, 0));
 			
-			// On affiche la grille
+			// On affiche la grille avec les légumes
 			for (int j = 0; j < GRID_SIZE; ++j)
 			{
 				for (int i = 0; i < GRID_SIZE; ++i)
@@ -116,15 +120,33 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	private void onSwipe(Direction d, Point p)
 	{
 		Point index = getIndexFromPos(p.x, p.y);
-		// TODO: nice stuff
 		Toast.makeText(getContext(), d + " i=" + index.x + " j=" + index.y, Toast.LENGTH_SHORT).show();
+		// TODO: déterminer c'est quoi l'autre case selon case recue et direction
+		//if estDeplacementValide(...)
+		//switchPlace(...);
 		
 		// feedback de vibration :)
 		Vibrator vibe = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
 		vibe.vibrate(10);
+		
+		crush();
 	}
 	
+	private boolean estDeplacementValide()
+	{
+		// TODO: vérifier si ca donne une ligne d'au moins 3
+		return false;
+	}
 	
+	private void crush()
+	{
+		// TODO: détruire les lignes de 3 ou +
+	}
+	
+	private void switchPlace(Point p1, Point p2)
+	{
+		// TODO: inverser avec belle petite animation si possible :)
+	}
 	
 	// Retourne l'indice du tableau en fonction d'une position en pixel
 	private Point getIndexFromPos(int x, int y)

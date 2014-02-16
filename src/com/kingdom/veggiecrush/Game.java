@@ -61,7 +61,7 @@ public class Game extends Activity implements OnClickListener
 				promptExit();
 				break;
 			case R.id.btnNewGame:
-				//TODO : Refresh the gameplay
+				//TODO : Resetter les scores, temps et la grille de jeu
 				break;
 		}
 	}
