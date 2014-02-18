@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -124,10 +123,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		// TODO: déterminer c'est quoi l'autre case selon case recue et direction
 		//if estDeplacementValide(...)
 		//switchPlace(...);
-		
-		// feedback de vibration :)
-		Vibrator vibe = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
-		vibe.vibrate(10);
 		
 		crush();
 	}
