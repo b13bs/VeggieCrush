@@ -269,13 +269,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	// Classe privée dont on se sert pour détecter les gestes de l'utilisateur
 	private class GestureListener extends SimpleOnGestureListener
 	{
-		private static final int SWIPE_MIN_DISTANCE = 100;
-	    private static final int SWIPE_MIN_VELOCITY = 100;
+	    private static final int SWIPE_MIN_VELOCITY = 70;
 		
 	    // 'fling' est un 'swipe'
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
+        	final int SWIPE_MIN_DISTANCE = (int)(0.9 * getLargeurCase());
+        	System.out.println(SWIPE_MIN_DISTANCE);
+        	
         	int srcX = (int)e1.getX();
         	int srcY = (int)e1.getY();
         	int dstX = (int)e2.getX();
