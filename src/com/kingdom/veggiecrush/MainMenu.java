@@ -28,6 +28,7 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
 		
+		// On enregistre tous les contrôles au listener de l'activité
 		Button btnTimeAttack = (Button) findViewById(R.id.btnTimeAttack);
 		btnTimeAttack.setOnClickListener(this);
 		Button btnBlitz = (Button) findViewById(R.id.btnBlitz);
@@ -42,35 +43,43 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 	}
 
 
+	// Appelé lors d'un clic sur un composant enregistré
 	@Override
 	public void onClick(View v)
 	{
 		switch (v.getId())
 		{
 			case R.id.btnTimeAttack:
+				// On demande le nom de joueur et une confirmation
+				// on passe en argument l'intent de l'activité qu'on désire démarrer
 				Intent intentTimeAttack = new Intent(this, Game.class);
 				intentTimeAttack.putExtra(Settings.EXTRA_GAME_MODE, Settings.GameMode.TIME_ATTACK);
 				promptPlayerNameDialog(intentTimeAttack);
 				break;
 			
 			case R.id.btnBlitz:
+				// On demande le nom de joueur et une confirmation
+				// on passe en argument l'intent de l'activité qu'on désire démarrer
 				Intent intentBlitz = new Intent(this, Game.class);
 				intentBlitz.putExtra(Settings.EXTRA_GAME_MODE, Settings.GameMode.BLITZ);
 				promptPlayerNameDialog(intentBlitz);
 				break;
 				
 			case R.id.btnScores:
+				// On démarrte l'activité des scores
 				Intent intentScores = new Intent(this, Highscores.class);
 				this.startActivity(intentScores);
 				break;
 				
 			case R.id.btnExit:
+				// On quitte l'application
 				finish();
 				break;
 		}
 	}
 	
 	
+	// Appelé lorsqu'un 'toggle' enregistré est modifié
 	@Override
 	public void onCheckedChanged(CompoundButton arg0, boolean isOn)
 	{
@@ -85,7 +94,7 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 	}
 	
 	
-	// Montre un dialogue pour entrer le nom du joueur, sur confirmation on part l'intent, sur cancel on annule
+	// Montre un dialogue pour entrer le nom du joueur, sur confirmation on part l'intent recu en argument, sur cancel on annule
 	private void promptPlayerNameDialog(final Intent targetIntent)
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -96,7 +105,10 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 	           .setPositiveButton("OK", new DialogInterface.OnClickListener() { 
 				    @Override
 				    public void onClick(DialogInterface dialog, int which) {
+				    	// On lis le nom du joueur
 				    	String playerName = input.getText().toString();
+				    	
+				    	// On vérifie s'il correspond à une longueur minimale
 				    	if (playerName.length() < 2)
 				    	{
 				    		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -105,6 +117,7 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 				    	}
 				    	else
 				    	{
+				    		// Tout est OK: on démarre l'activité et cache le clavier
 				    		targetIntent.putExtra(Settings.EXTRA_PLAYER_NAME, playerName);
 				    		startActivity(targetIntent);
 				    		
@@ -117,6 +130,7 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 				builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 				    @Override
 				    public void onClick(DialogInterface dialog, int which) {
+				    	// On annule
 				        dialog.cancel();
 				    }
 				});

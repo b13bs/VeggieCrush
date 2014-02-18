@@ -20,10 +20,12 @@ public class GameViewThread extends Thread {
 		super.start();
 	}
 	
+	// Utilisé principalement pour indiquer d'arrêter le fil d'exécution
 	public void setRunning(boolean run) {
 		running = run;
 	}
 
+	// On désire que la vue se redissine à environ tous les 'refreshRateMS' millisecondes.
 	@SuppressLint("WrongCall")
 	@Override
 	public void run() {
@@ -47,6 +49,7 @@ public class GameViewThread extends Thread {
 				}
 			}
 			
+			// On dort le temps restant pour compléter un cycle de 'refreshRateMS' millisecondes.
 			sleepTime = refreshRateMS - (System.currentTimeMillis() - startTime);
 			if (sleepTime > 0 )
 			{
