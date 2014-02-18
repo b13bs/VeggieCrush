@@ -90,7 +90,7 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		final EditText input = new EditText(this);
-		input.setInputType(InputType.TYPE_CLASS_TEXT);
+		input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 	    builder.setTitle("Enter player name")
 	           .setView(input)
 	           .setPositiveButton("OK", new DialogInterface.OnClickListener() { 
