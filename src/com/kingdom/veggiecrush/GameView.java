@@ -16,11 +16,13 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.widget.Toast;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	
 	private static enum Direction { LEFT, RIGHT, UP, DOWN };
+	
+	private static final int REFRESH_RATE_MS = 16;
+	private static final int MOVING_STEPS = 8;
 	
 	private GameViewThread mThread;
 	private GestureDetector gestDetector;
@@ -49,7 +51,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void surfaceCreated(SurfaceHolder arg0) {
 		// On crée et enregistre le thread pour rafraichir la surface de jeu
-		mThread = new GameViewThread(this);
+		mThread = new GameViewThread(this, REFRESH_RATE_MS);
 		mThread.setRunning(true);
 		mThread.start();
 	}
@@ -96,13 +98,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			canvas.drawColor(Color.rgb(46, 97, 0));
 			
 			// On affiche la grille avec les légumes
+			Rect drawRectangle;
 			for (int j = 0; j < GRID_SIZE; ++j)
 			{
 				for (int i = 0; i < GRID_SIZE; ++i)
 				{
 					if (grid[i][j] != null)
 					{
-						canvas.drawBitmap(grid[i][j].bitmap, grid[i][j].bitmapRect, getRectFromIndex(i, j), paint);
+						drawRectangle = getRectFromIndex(i, j);
+						drawRectangle.offset(grid[i][j].offsetPos.x, grid[i][j].offsetPos.y);
+						canvas.drawBitmap(grid[i][j].bitmap, grid[i][j].bitmapRect, drawRectangle, paint);
 					}
 				}
 			}
@@ -119,10 +124,44 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	private void onSwipe(Direction d, Point p)
 	{
 		Point index = getIndexFromPos(p.x, p.y);
-		Toast.makeText(getContext(), d + " i=" + index.x + " j=" + index.y, Toast.LENGTH_SHORT).show();
-		// TODO: déterminer c'est quoi l'autre case selon case recue et direction
-		//if estDeplacementValide(...)
-		//switchPlace(...);
+		
+		// On vérifie que le mouvement est valide (pour les bordures)
+		if ( (index.x == 0           && d == Direction.LEFT)  ||
+		     (index.x == GRID_SIZE-1 && d == Direction.RIGHT) ||
+		     (index.y == 0           && d == Direction.UP)    ||
+		     (index.y == GRID_SIZE-1 && d == Direction.DOWN)  )
+		{
+			//déplacement invalide!
+			return;
+		}
+		
+		// On détermine quelle autre case est impliquée
+		Point index2;
+		switch (d)
+		{
+			case DOWN:
+				index2 = new Point(index.x, index.y + 1);
+				break;
+			case LEFT:
+				index2 = new Point(index.x - 1, index.y);
+				break;
+			case RIGHT:
+				index2 = new Point(index.x + 1, index.y);
+				break;
+			case UP:
+				index2 = new Point(index.x, index.y - 1);
+				break;
+			default:
+				return;
+		}
+		
+		// On vérifie si le déplacement est valide (au moins 3 en ligne)
+		// TODO: !!!
+		if (true)
+		{
+			// On change de place
+			switchPlace(index, index2); //temporaire!
+		}
 		
 		crush();
 	}
@@ -138,9 +177,60 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		// TODO: détruire les lignes de 3 ou +
 	}
 	
-	private void switchPlace(Point p1, Point p2)
+	private void switchPlace(Point i1, Point i2)
 	{
 		// TODO: inverser avec belle petite animation si possible :)
+		Veggie veg1 = grid[i1.x][i1.y];
+		Veggie veg2 = grid[i2.x][i2.y];
+		if (i1.y == i2.y)
+		{
+			//déplacement horizontal
+			boolean moveVeg1Right = i1.x < i2.x;
+			int movingDistance = getLargeurCase();
+			int stepSize = (int)(movingDistance / (float)MOVING_STEPS);
+			while ( Math.abs(veg1.offsetPos.x) < movingDistance )
+			{
+				if (moveVeg1Right)
+				{
+					veg1.offsetPos.x += stepSize;
+					veg2.offsetPos.x -= stepSize;
+				}
+				else
+				{
+					veg1.offsetPos.x -= stepSize;
+					veg2.offsetPos.x += stepSize;
+				}
+				try { Thread.sleep(REFRESH_RATE_MS); } catch (InterruptedException e) { e.printStackTrace();	}
+			}
+		}
+		else if (i1.x == i2.x)
+		{
+			//déplacement vertical
+			boolean moveVeg1Down = i1.y < i2.y;
+			int movingDistance = getHauteurCase();
+			int stepSize = (int)(movingDistance / (float)MOVING_STEPS);
+			while ( Math.abs(veg1.offsetPos.y) < movingDistance )
+			{
+				if (moveVeg1Down)
+				{
+					veg1.offsetPos.y += stepSize;
+					veg2.offsetPos.y -= stepSize;
+				}
+				else
+				{
+					veg1.offsetPos.y -= stepSize;
+					veg2.offsetPos.y += stepSize;
+				}
+				try { Thread.sleep(REFRESH_RATE_MS); } catch (InterruptedException e) { e.printStackTrace();	}
+			}
+		}
+		
+		veg1.offsetPos.x = 0;
+		veg1.offsetPos.y = 0;
+		veg2.offsetPos.x = 0;
+		veg2.offsetPos.y = 0;
+		grid[i1.x][i1.y] = veg2;
+		grid[i2.x][i2.y] = veg1;
 	}
 	
 	// Retourne l'indice du tableau en fonction d'une position en pixel
@@ -158,7 +248,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		return new Rect(itemSize * i, itemSize * j, itemSize * (i+1), itemSize * (j+1));
 	}
 	
+	private int getLargeurCase()
+	{
+		return getWidth() / GRID_SIZE;
+	}
 	
+	private int getHauteurCase()
+	{
+		return getHeight() / GRID_SIZE;
+	}
 	
 	
 	

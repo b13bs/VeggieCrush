@@ -2,6 +2,7 @@ package com.kingdom.veggiecrush;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.Rect;
 
 public class Veggie {
@@ -11,6 +12,7 @@ public class Veggie {
 	VeggieKind kind;
 	Bitmap bitmap;
 	Rect bitmapRect;
+	Point offsetPos;
 	
 	public Veggie (Context c, VeggieKind kind)
 	{
@@ -42,5 +44,7 @@ public class Veggie {
 
 		// Le rectangle qui sera utilisé pour dessiner
 		bitmapRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		
+		offsetPos = new Point(0, 0);
 	}
 }

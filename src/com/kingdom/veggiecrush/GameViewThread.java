@@ -5,47 +5,49 @@ import android.graphics.Canvas;
 
 public class GameViewThread extends Thread {
 	
-	private GameView mView;
-	private boolean mRunning = false;
+	private GameView view;
+	private boolean running = false;
+	private int refreshRateMS = 0;
 
-	public GameViewThread(GameView view) {
-		mView = view;
+	public GameViewThread(GameView view, int refreshRateMS) {
+		this.view = view;
+		this.refreshRateMS = refreshRateMS;
 	}
 
 	@Override
 	public void start() {
-		mRunning = true;
+		running = true;
 		super.start();
 	}
 	
 	public void setRunning(boolean run) {
-		mRunning = run;
+		running = run;
 	}
 
 	@SuppressLint("WrongCall")
 	@Override
 	public void run() {
 		long startTime, sleepTime;
-		while (mRunning) {
+		while (running) {
 			Canvas c = null;
 			startTime = System.currentTimeMillis();
 			
 			try
 			{
-				c = mView.getHolder().lockCanvas();
-				synchronized (mView.getHolder()) {
-					mView.onDraw(c);
+				c = view.getHolder().lockCanvas();
+				synchronized (view.getHolder()) {
+					view.onDraw(c);
 				}
 			}
 			finally
 			{
 				if (c != null)
 				{
-					mView.getHolder().unlockCanvasAndPost(c);
+					view.getHolder().unlockCanvasAndPost(c);
 				}
 			}
 			
-			sleepTime = 20 - (System.currentTimeMillis() - startTime);
+			sleepTime = refreshRateMS - (System.currentTimeMillis() - startTime);
 			if (sleepTime > 0 )
 			{
 				try { Thread.sleep(sleepTime); } catch (Exception e) { e.printStackTrace(); }
