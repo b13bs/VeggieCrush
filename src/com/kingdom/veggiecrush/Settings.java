@@ -48,4 +48,6 @@ public class Settings {
 		bitmapPotato = BitmapFactory.decodeResource(c.getResources(), R.drawable.potato);
 		bitmapTomato = BitmapFactory.decodeResource(c.getResources(), R.drawable.tomato);
 	}
+	
+	
 }
