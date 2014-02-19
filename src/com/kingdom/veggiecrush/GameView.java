@@ -1,5 +1,6 @@
 package com.kingdom.veggiecrush;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.kingdom.veggiecrush.Veggie.VeggieKind;
@@ -24,6 +25,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	private static final int REFRESH_RATE_MS = 16;
 	private static final int MOVING_STEPS = 8;
 	
+	private ArrayList<GameListener> listeners = new ArrayList<GameListener>();
+	
 	private GameViewThread refreshThread;
 	private GestureDetector gestDetector;
 	private Paint paint;
@@ -41,6 +44,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		
 		Settings.loadBitmaps(getContext());
 		initGameGrid();
+	}
+	
+	public void addGameListener(GameListener l)
+	{
+		listeners.add(l);
+	}
+	
+	public void removeGameListener(GameListener l)
+	{
+		listeners.remove(l);
 	}
 	
 	@Override
@@ -163,7 +176,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		if (true)
 		{
 			// On change de place
-			switchPlace(index, index2); //temporaire!
+			switchPlace(index, index2);
+			for (GameListener l : listeners)
+			{
+				l.onMove();
+			}
 		}
 		
 		crush();
@@ -276,7 +293,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
         	final int SWIPE_MIN_DISTANCE = (int)(0.9 * getLargeurCase());
-        	System.out.println(SWIPE_MIN_DISTANCE);
         	
         	int srcX = (int)e1.getX();
         	int srcY = (int)e1.getY();

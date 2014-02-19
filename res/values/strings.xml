@@ -16,5 +16,6 @@
     <string name="play_again">Rejouer</string>
     <string name="other_mode">Autre mode</string>
     <string name="quit">Quitter</string>
+    <string name="score">Score</string>
 
 </resources>

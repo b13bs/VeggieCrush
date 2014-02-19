@@ -8,16 +8,16 @@
     tools:context=".Game" >
 
     <TextView
-        android:id="@+id/txtChain"
+        android:id="@+id/txtChaines"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView3"
         android:layout_alignBottom="@+id/textView3"
-        android:layout_alignRight="@+id/txtCountdown"
+        android:layout_alignRight="@+id/txtDeplacement"
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="20sp"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/textView4"
@@ -25,10 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView3"
         android:layout_below="@+id/textView3"
-        android:text="@string/highscores"
+        android:text="@string/score"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="20sp"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/textView3"
@@ -45,8 +45,8 @@
         android:id="@+id/txtScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/txtChain"
-        android:layout_below="@+id/txtChain"
+        android:layout_alignLeft="@+id/txtChaines"
+        android:layout_below="@+id/txtChaines"
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="20sp"
@@ -112,15 +112,15 @@
         android:textColor="#ffffff" />
 
     <TextView
-        android:id="@+id/txtCountdown"
+        android:id="@+id/txtDeplacement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/txtChain"
+        android:layout_above="@+id/txtChaines"
         android:layout_alignRight="@+id/TxtMode"
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="20sp"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
     
     <com.kingdom.veggiecrush.GameView
         android:id="@+id/gameView"
