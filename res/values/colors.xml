@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_scores">#296100</color>
+    <color name="button_text">#ffffff</color>
+    <color name="score_text">#ffffff</color>
+    
+</resources>

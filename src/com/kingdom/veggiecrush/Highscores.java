@@ -65,7 +65,7 @@ public class Highscores extends Activity implements OnClickListener {
 	public void hardCodeSharedPref() {
 		SharedPreferences prefs = this.getSharedPreferences("com.kingdom.veggiecrush", Context.MODE_PRIVATE);
 		Editor editor = prefs.edit();
-		editor.putString("highScores","{\"player5\":{\"name\":\"joueurA\",\"score\":\"200\"},\"player4\":{\"name\":\"joueurB\",\"score\":\"400\"},\"player3\":{\"name\":\"joueurC\",\"score\":\"300\"},\"player2\":{\"name\":\"joueurD\",\"score\":\"100\"},\"player1\":{\"name\":\"joueurE\",\"score\":\"500\"}}");
+		editor.putString("highScores","{\"player5\":{\"name\":\"joueurA\",\"score\":\"200\"},\"player4\":{\"name\":\"joueurB\",\"score\":\"400\"},\"player3\":{\"name\":\"joueurC\",\"score\":\"300\"},\"player2\":{\"name\":\"joueurD\",\"score\":\"100\"},\"player1\":{\"name\":\"joueurE\",\"score\":\"5000\"}}");
 		editor.commit();
 	}
 	

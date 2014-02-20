@@ -17,7 +17,7 @@
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="20sp"
-        android:textColor="#ffffff" />
+        android:textColor="@color/button_text" />
 
     <TextView
         android:id="@+id/textView4"

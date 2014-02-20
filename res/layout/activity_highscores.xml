@@ -12,7 +12,7 @@
         android:layout_alignBottom="@+id/btnPlayAgain"
         android:layout_centerHorizontal="true"
         android:text="@string/other_mode"
-        android:textColor="#ffffff" />
+        android:textColor="@color/button_text" />
 
     <Button
         android:id="@+id/btnPlayAgain"
@@ -22,7 +22,7 @@
         android:layout_marginBottom="40dp"
         android:layout_toLeftOf="@+id/btnOtherMode"
         android:text="@string/play_again"
-        android:textColor="#ffffff" />
+        android:textColor="@color/button_text" />
 
     <Button
         android:id="@+id/btnQuit"
@@ -32,7 +32,7 @@
         android:layout_alignBottom="@+id/btnOtherMode"
         android:layout_toRightOf="@+id/btnOtherMode"
         android:text="@string/quit"
-        android:textColor="#ffffff" />
+        android:textColor="@color/button_text" />
 
     <TextView
         android:id="@+id/textViewScores"
@@ -46,123 +46,133 @@
         android:textColor="#ffffff" />
 
     <TableLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btnPlayAgain"
+        android:layout_gravity="center"
+        android:layout_weight="0.40"
         android:layout_below="@+id/textViewScores"
-        android:layout_marginTop="18dp" >
+        android:layout_marginTop="40dip"
+        android:padding="20dip"
+        android:layout_margin="10dip"
+        android:stretchColumns="1"
+        android:background="@color/background_scores" >
 
         <TableRow
             android:id="@+id/scoresRow1"
-            android:layout_weight="1"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent" >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
             
             <TextView 
                 android:id="@+id/scoresName1"
-                android:text=""
-                android:layout_weight="1"
-                android:layout_width="match_parent" />
+                android:text="Default #1"
+                android:layout_column="1"
+	            android:padding="10dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+              	android:textColor="@color/score_text" />
 
             <TextView
                 android:id="@+id/scoresScore1"
-                android:text=""
-                android:layout_weight="1" 
-                android:layout_width="match_parent" />
+                android:text="-1"
+                android:gravity="right"
+	            android:padding="10dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+              	android:textColor="@color/score_text" />
             
         </TableRow>
 
         <TableRow
             android:id="@+id/scoresRow2"
-            android:layout_weight="1"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
             
             <TextView 
                 android:id="@+id/scoresName2"
-                android:text="nom2"
-                android:layout_weight="1"
-                android:layout_width="match_parent" />
+                android:text="Default #2"
+                android:layout_column="1"
+	            android:padding="10dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+              	android:textColor="@color/score_text" />
 
             <TextView
                 android:id="@+id/scoresScore2"
-                android:text="score2"
-                android:layout_weight="1" 
-                android:layout_width="match_parent" />
+                android:text="-2"
+                android:gravity="right"
+	            android:padding="10dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+              	android:textColor="@color/score_text" />
             
         </TableRow>
         
         <TableRow
             android:id="@+id/scoresRow3"
-            android:layout_weight="1"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
             
             <TextView 
                 android:id="@+id/scoresName3"
-                android:text="nom3"
-                android:layout_weight="1"
-                android:layout_width="match_parent" />
+                android:text="Default #3"
+                android:layout_column="1"
+	            android:padding="10dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+              	android:textColor="@color/score_text" />
 
             <TextView
                 android:id="@+id/scoresScore3"
-                android:text="score3"
-                android:layout_weight="1" 
-                android:layout_width="match_parent" />
+                android:text="-3"
+                android:gravity="right"
+	            android:padding="10dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+              	android:textColor="@color/score_text" />
             
         </TableRow>
         
         <TableRow
             android:id="@+id/scoresRow4"
-            android:layout_weight="1"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
             
             <TextView 
                 android:id="@+id/scoresName4"
-                android:text="nom4"
-                android:layout_weight="1"
-                android:layout_width="match_parent" />
+                android:text="Default #4"
+                android:layout_column="1"
+	            android:padding="10dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+              	android:textColor="@color/score_text" />
 
             <TextView
                 android:id="@+id/scoresScore4"
-                android:text="score4"
-                android:layout_weight="1" 
-                android:layout_width="match_parent" />
+                android:text="-4"
+                android:gravity="right"
+	            android:padding="10dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+              	android:textColor="@color/score_text" />
             
         </TableRow>
         
         <TableRow
             android:id="@+id/scoresRow5"
-            android:layout_weight="1"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
             
             <TextView 
                 android:id="@+id/scoresName5"
-                android:text="nom5"
-                android:layout_weight="1"
-                android:layout_width="match_parent" />
+                android:text="Default #5"
+                android:layout_column="1"
+	            android:padding="10dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+              	android:textColor="@color/score_text" />
 
             <TextView
                 android:id="@+id/scoresScore5"
-                android:text="score5"
-                android:layout_weight="1" 
-                android:layout_width="match_parent" />
+                android:text="-5"
+                android:gravity="right"
+	            android:padding="10dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+              	android:textColor="@color/score_text" />
             
         </TableRow>
 
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
+        
     </TableLayout>
 
 </RelativeLayout>
