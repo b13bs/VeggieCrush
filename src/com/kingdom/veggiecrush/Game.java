@@ -4,6 +4,7 @@ import com.kingdom.veggiecrush.R.string;
 import com.kingdom.veggiecrush.Settings.GameMode;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,12 +21,15 @@ public class Game extends Activity implements OnClickListener, GameListener
 
 	private GameMode mode = null;
 	
+	private GameTimer timer = null;
+	private boolean timerPaused = false;
+	
 	private TextView txtScore;
-	private TextView txtDeplacement;
+	private TextView txtRestant;
 	private TextView txtChaines;
 	
 	private int score = 0;
-	private int deplacements = 0;
+	private int restant = 0;
 	private int chaines = 0;
 	
 	private int gameSize = 0;
@@ -44,12 +48,19 @@ public class Game extends Activity implements OnClickListener, GameListener
 		mode = (GameMode) getIntent().getExtras().get(Settings.EXTRA_GAME_MODE);
 		
 		TextView txtMode = (TextView) findViewById(R.id.TxtMode);
+		TextView txtTexteRestant = (TextView) findViewById(R.id.txtTexteRestant);
 		if(mode == GameMode.TIME_ATTACK)
+		{
 			txtMode.setText(string.time_Attack);
+			txtTexteRestant.setText("Sec. restantes");
+		}
 		else
+		{
 			txtMode.setText(string.blitz);
+			txtTexteRestant.setText("Déplac. restants");
+		}
 		
-		txtDeplacement = (TextView) findViewById(R.id.txtDeplacement);		
+		txtRestant = (TextView) findViewById(R.id.txtRestant);		
 		txtScore = (TextView) findViewById(R.id.txtScore);		
 		txtChaines = (TextView) findViewById(R.id.txtChaines);
 		resetStats();
@@ -69,6 +80,25 @@ public class Game extends Activity implements OnClickListener, GameListener
 	}
 	
 	@Override
+	public void onPause()
+	{
+		super.onPause();
+		timer.cancel();
+		timerPaused = true;
+	}
+	
+	public void onResume()
+	{
+	    super.onResume();
+	    if (mode == GameMode.TIME_ATTACK && timerPaused)
+	    {
+	    	timer = new GameTimer(restant * 1000, 1000);
+	    	timer.start();
+	    	timerPaused = false;
+	    }
+	}
+	
+	@Override
 	public void onClick(View v)
 	{
 		switch (v.getId())
@@ -77,8 +107,7 @@ public class Game extends Activity implements OnClickListener, GameListener
 				promptExit();
 				break;
 			case R.id.btnNewGame:
-				//TODO: confirmation?
-				resetGame();
+				promptReset();
 				break;
 		}
 	}
@@ -122,6 +151,25 @@ public class Game extends Activity implements OnClickListener, GameListener
 	    builder.show();	
 	}
 	
+	private void promptReset()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Reset the game").setMessage("Do you really want to reset the current game?");
+		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				resetGame();
+			}
+		});
+		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+	    builder.show();	
+	}
+	
 	private void resetGame()
 	{
 		GameView gvToDelete = (GameView) findViewById(R.id.gameView);
@@ -149,24 +197,50 @@ public class Game extends Activity implements OnClickListener, GameListener
 	
 	private void resetStats()
 	{
+		if (mode == GameMode.BLITZ)
+		{
+			restant = 10;
+		}
+		else
+		{
+			if (timer != null)
+			{
+				timer.cancel();
+			}
+			restant = 15;
+			timer = new GameTimer(restant * 1000, 1000);
+			timer.start();
+		}
 		score = 0;
-		deplacements = 0;
 		chaines = 0;
-		txtScore.setText("0");
-		txtDeplacement.setText("0");
-		txtChaines.setText("0");
+		txtScore.setText("" + score);
+		txtRestant.setText("" + restant);
+		txtChaines.setText("" + chaines);
 	}
 	
 	@Override
 	public void onMove()
 	{
-		txtDeplacement.setText("" + (++deplacements));
+		if (mode == GameMode.BLITZ)
+		{
+			txtRestant.setText("" + (--restant));
+			if (restant <= 0)
+			{
+				// TODO: partie terminée
+			}
+		}
 	}
 
 	@Override
 	public void onCrush(int nbItemsCrushed)
 	{
-		// TODO: determiner un score en fonction du nb d'items crushed
+		// 100 points pour chaine de 3 + 50 points par pierre supplémentaire
+		score += 100;
+		if (nbItemsCrushed > 3)
+		{
+			score += 50 * (nbItemsCrushed - 3);
+		}
+		txtScore.setText("" + score);
 	}
 
 	@Override
@@ -174,4 +248,29 @@ public class Game extends Activity implements OnClickListener, GameListener
 	{
 		txtChaines.setText("" + (++chaines));
 	}
+	
+	
+	
+	public class GameTimer extends CountDownTimer
+    {
+		int intervalSec;
+		
+        public GameTimer(long millisInFuture, long countDownInterval) {
+			super(millisInFuture, countDownInterval);
+			intervalSec = (int)(countDownInterval / 1000);
+		}
+
+        @Override
+        public void onFinish() {
+        	restant = 0;
+			txtRestant.setText("0");
+			// TODO: partie terminée
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+        	restant -= intervalSec;
+        	txtRestant.setText("" + restant);
+		}
+    }
 }

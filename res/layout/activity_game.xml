@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView3"
         android:layout_alignBottom="@+id/textView3"
-        android:layout_alignRight="@+id/txtDeplacement"
+        android:layout_alignRight="@+id/txtRestant"
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#ffffff"
@@ -34,8 +34,8 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/txtTexteRestant"
+        android:layout_below="@+id/txtTexteRestant"
         android:text="@string/chain"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="20sp"
@@ -92,7 +92,7 @@
         android:id="@+id/TxtMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView2"
+        android:layout_above="@+id/txtTexteRestant"
         android:layout_marginRight="8dp"
         android:layout_toLeftOf="@+id/btnExitGame"
         android:text="@string/time_Attack"
@@ -101,18 +101,18 @@
         android:textColor="#ffffff" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtTexteRestant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/textView1"
-        android:text="@string/move"
+        android:text="@string/restant"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="20sp"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/txtDeplacement"
+        android:id="@+id/txtRestant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/txtChaines"
