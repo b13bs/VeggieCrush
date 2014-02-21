@@ -23,6 +23,7 @@ public class Settings {
 	public static Bitmap bitmapPotato = null;
 	public static Bitmap bitmapTomato = null;
 	
+	// Fonction qui indique si le son dans les options est activé
 	public static boolean isSoundOn(Context c)
 	{
 		SharedPreferences appOptions = c.getSharedPreferences(APP_OPTIONS_PREFS, 0);
@@ -30,6 +31,7 @@ public class Settings {
 	    return soundOn;
 	}
 	
+	// Fonction qui sauvegarde l'état du son.
 	public static void setSoundOn(Context c, boolean state)
 	{
 		SharedPreferences appOptions = c.getSharedPreferences(APP_OPTIONS_PREFS, 0);
@@ -38,6 +40,7 @@ public class Settings {
 	    editor.commit();
 	}
 	
+	// Fonction statique qui charge tous les bitmaps utilisés pour le jeu
 	public static void loadBitmaps(Context c)
 	{
 		bitmapBroccoli = BitmapFactory.decodeResource(c.getResources(), R.drawable.broccoli);
