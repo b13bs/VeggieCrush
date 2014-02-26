@@ -309,12 +309,13 @@ public class Game extends Activity implements OnClickListener, MoveListener
 		}
 		
 		// On vérifie si le déplacement est valide (au moins 3 en ligne)
-		// TODO: !!!
-		if (true)
+		// On change de place
+		veggieGrid.switchPlace(index, index2);
+		
+		int nbLegumeDetruit = veggieGrid.verifyCombo(getApplicationContext()) ;
+		if (nbLegumeDetruit > 0)
 		{
-			// On change de place
-			veggieGrid.switchPlace(index, index2);
-			
+			onCrush(nbLegumeDetruit);
 			// On décrémente le compteur de déplacements
 			if (mode == GameMode.BLITZ)
 			{
@@ -325,13 +326,20 @@ public class Game extends Activity implements OnClickListener, MoveListener
 					gameOver();
 				}
 			}
-			
-			// TODO: badaboom crusher toute
+			while((nbLegumeDetruit = veggieGrid.verifyCombo(getApplicationContext()))>0)
+			{
+				onCrush(nbLegumeDetruit);
+			}
 			if (Settings.isSoundOn(this))
 			{
 				soundPool.play(crushSoundId, 1.0f, 1.0f, 1, 0, 1.0f);
 			}
 		}
+		else
+		{
+			veggieGrid.switchPlace(index, index2);
+		}
+		
 	}
 	
 	
