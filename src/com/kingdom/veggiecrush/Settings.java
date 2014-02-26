@@ -15,6 +15,8 @@ public class Settings {
 	public static final String APP_OPTIONS_PREFS = "APP_OPTIONS_PREFS";
 	public static final String OPTION_SOUND = "OPTION_SOUND";
 	
+	public static boolean bitmapsLoaded = false;
+	
 	public static Bitmap bitmapBroccoli = null;
 	public static Bitmap bitmapCarrot = null;
 	public static Bitmap bitmapEggplant = null;
@@ -50,6 +52,8 @@ public class Settings {
 		bitmapHotPepper = BitmapFactory.decodeResource(c.getResources(), R.drawable.hot_pepper);
 		bitmapPotato = BitmapFactory.decodeResource(c.getResources(), R.drawable.potato);
 		bitmapTomato = BitmapFactory.decodeResource(c.getResources(), R.drawable.tomato);
+		
+		bitmapsLoaded = true;
 	}
 	
 	

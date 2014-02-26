@@ -28,6 +28,12 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
 		
+		// On charge tous les bitmaps pour l'application
+		if (!Settings.bitmapsLoaded)
+		{
+			Settings.loadBitmaps(this);
+		}
+		
 		// On enregistre tous les contrôles au listener de l'activité
 		Button btnTimeAttack = (Button) findViewById(R.id.btnTimeAttack);
 		btnTimeAttack.setOnClickListener(this);
