@@ -1,7 +1,9 @@
 package com.kingdom.veggiecrush;
 
 import java.util.ArrayList;
+
 import com.kingdom.veggiecrush.VeggieGrid.Direction;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -24,7 +26,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private GestureDetector gestDetector;
 	private Paint paint;
 	
-	private VeggieGrid gameGrid = null;
+	private VeggieGrid vaggieGrid;
 	
 	public GameView(Context context, AttributeSet attrs)
 	{
@@ -38,7 +40,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	
 	public void setGameGrid(VeggieGrid g)
 	{
-		gameGrid = g;
+		vaggieGrid = g;
 	}
 	
 	public void addMoveListener(MoveListener l)
@@ -97,7 +99,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			canvas.drawColor(Color.rgb(46, 97, 0));
 			
 			// On affiche la grille avec les légumes
-			gameGrid.drawVeggiesToCanvas(canvas, paint);
+			vaggieGrid.drawVeggiesToCanvas(canvas, paint);
 		}
     }
 	
@@ -121,7 +123,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
-        	final int SWIPE_MIN_DISTANCE = (int)(0.9 * gameGrid.getLargeurCase());
+        	final int SWIPE_MIN_DISTANCE = (int)(0.9 * vaggieGrid.getLargeurCase());
         	
         	int srcX = (int)e1.getX();
         	int srcY = (int)e1.getY();
