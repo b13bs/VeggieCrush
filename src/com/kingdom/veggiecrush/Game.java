@@ -1,12 +1,11 @@
 package com.kingdom.veggiecrush;
 
-import java.io.IOException;
-
 import com.kingdom.veggiecrush.VeggieGrid.Direction;
 import com.kingdom.veggiecrush.R.string;
 import com.kingdom.veggiecrush.Settings.GameMode;
 
-import android.media.MediaPlayer;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Display;
@@ -39,7 +38,8 @@ public class Game extends Activity implements OnClickListener, MoveListener
 	
 	private VeggieGrid veggieGrid;
 	
-	private MediaPlayer crushSound;
+	private SoundPool soundPool;
+	private int crushSoundId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +94,8 @@ public class Game extends Activity implements OnClickListener, MoveListener
 		gv.setGameGrid(veggieGrid);
 		
 		// On créé un media player pour les effets sonores
-		crushSound = MediaPlayer.create(this, R.raw.sound_crunch);
+		soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+		crushSoundId = soundPool.load(this, R.raw.sound_crunch, 1);
 		
 		// On reset le tout!
 		resetGame();
@@ -326,9 +327,9 @@ public class Game extends Activity implements OnClickListener, MoveListener
 			}
 			
 			// TODO: badaboom crusher toute
-			if (Settings.isSoundOn(getApplicationContext()))
+			if (Settings.isSoundOn(this))
 			{
-				crushSound.start();
+				soundPool.play(crushSoundId, 1.0f, 1.0f, 1, 0, 1.0f);
 			}
 		}
 	}
