@@ -10,8 +10,11 @@ public class Settings {
 	public static final String EXTRA_GAME_MODE = "GAME_MODE";
 	public static enum GameMode { TIME_ATTACK, BLITZ };
 	
+	public static final String EXTRA_SOURCE = "GAME";
+	public static enum Source { GAME, MENU };
+	
 	public static final String EXTRA_PLAYER_NAME = "PLAYER_NAME";
-
+	
 	public static final String APP_OPTIONS_PREFS = "APP_OPTIONS_PREFS";
 	public static final String OPTION_SOUND = "OPTION_SOUND";
 	

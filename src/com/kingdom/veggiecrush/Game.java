@@ -49,6 +49,7 @@ public class Game extends Activity implements OnClickListener, MoveListener
 		
 		// On vérifie de quel mode de jeu il s'agit
 		mode = (GameMode) getIntent().getExtras().get(Settings.EXTRA_GAME_MODE);
+		String name = (String) getIntent().getExtras().get(Settings.EXTRA_PLAYER_NAME);
 		
 		// On affiche le bon texte en conséquences
 		TextView txtMode = (TextView) findViewById(R.id.TxtMode);
@@ -250,6 +251,10 @@ public class Game extends Activity implements OnClickListener, MoveListener
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				Intent intentScores = new Intent(getApplicationContext(), Highscores.class);
+				//intentScores.putExtra(Settings.EXTRA_GAME_MODE, Settings.GameMode.TIME_ATTACK);
+				intentScores.putExtra(Settings.EXTRA_GAME_MODE, mode);
+				intentScores.putExtra(Settings.EXTRA_PLAYER_NAME, (String) getIntent().getExtras().get(Settings.EXTRA_PLAYER_NAME));
+				intentScores.putExtra(Settings.EXTRA_SOURCE, Settings.Source.GAME);
 				startActivity(intentScores);
 				finish();
 			}

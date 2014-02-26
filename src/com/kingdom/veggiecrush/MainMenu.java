@@ -74,6 +74,7 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 			case R.id.btnScores:
 				// On démarrte l'activité des scores
 				Intent intentScores = new Intent(this, Highscores.class);
+				intentScores.putExtra(Settings.EXTRA_SOURCE, Settings.Source.MENU);
 				this.startActivity(intentScores);
 				break;
 				

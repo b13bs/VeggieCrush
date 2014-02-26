@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.PriorityQueue;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.kingdom.veggiecrush.Settings.GameMode;
+import com.kingdom.veggiecrush.Settings.Source;
  
 import android.os.Bundle;
 import android.view.View;
@@ -19,16 +22,28 @@ import android.content.SharedPreferences.Editor;
 
 public class Highscores extends Activity implements OnClickListener {
 
+	private GameMode modePrecedent = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_highscores);
 		
-		Button btnPlayAgain = (Button) findViewById(R.id.btnPlayAgain);
-		btnPlayAgain.setOnClickListener(this);
-		Button btnOtherMode = (Button) findViewById(R.id.btnOtherMode);
-		btnOtherMode.setOnClickListener(this);
+		Source activityPrecedent = (Source) getIntent().getExtras().get(Settings.EXTRA_SOURCE);
+				
+		if(activityPrecedent == Settings.Source.GAME) {
+			Button btnPlayAgain = (Button) findViewById(R.id.btnPlayAgain);
+			btnPlayAgain.setOnClickListener(this);
+			Button btnOtherMode = (Button) findViewById(R.id.btnOtherMode);
+			btnOtherMode.setOnClickListener(this);
+			
+		} else if(activityPrecedent == Settings.Source.MENU) {
+			Button btnPlayAgain = (Button) findViewById(R.id.btnPlayAgain);
+			btnPlayAgain.setVisibility(View.INVISIBLE);
+			Button btnOtherMode = (Button) findViewById(R.id.btnOtherMode);
+			btnOtherMode.setVisibility(View.INVISIBLE);
+		}
+		
 		Button btnExit = (Button) findViewById(R.id.btnQuit);
 		btnExit.setOnClickListener(this);
 		
@@ -47,13 +62,25 @@ public class Highscores extends Activity implements OnClickListener {
 		{
 			case R.id.btnPlayAgain:
 				Intent intentPlayAgain = new Intent(this, Game.class);
-				// TODO: switcher sur le mode de jeu precedent
-				//intentPlayAgain.putExtra(Settings.EXTRA_GAME_MODE, Settings.GAME_MODE.TIME_ATTACK);
+				modePrecedent = (GameMode) getIntent().getExtras().get(Settings.EXTRA_GAME_MODE);
+				String namePlayer = (String) getIntent().getExtras().get(Settings.EXTRA_PLAYER_NAME);
+				intentPlayAgain.putExtra(Settings.EXTRA_GAME_MODE, modePrecedent);
+				intentPlayAgain.putExtra(Settings.EXTRA_PLAYER_NAME, namePlayer);
+				startActivity(intentPlayAgain);
+				finish();
 				break;
 			
 			case R.id.btnOtherMode:
 				Intent intentOtherMode = new Intent(this, Game.class);
-				//intentOtherMode.putExtra(Settings.EXTRA_GAME_MODE, Settings.GAME_MODE.BLITZ);
+				modePrecedent = (GameMode) getIntent().getExtras().get(Settings.EXTRA_GAME_MODE);
+				if (modePrecedent == GameMode.TIME_ATTACK) {
+					intentOtherMode.putExtra(Settings.EXTRA_GAME_MODE, Settings.GameMode.BLITZ);
+				} else if (modePrecedent == GameMode.BLITZ) {
+					intentOtherMode.putExtra(Settings.EXTRA_GAME_MODE, Settings.GameMode.TIME_ATTACK);
+				}
+				intentOtherMode.putExtra(Settings.EXTRA_PLAYER_NAME, (String) getIntent().getExtras().get(Settings.EXTRA_PLAYER_NAME));
+				startActivity(intentOtherMode);
+				finish();
 				break;
 				
 			case R.id.btnQuit:
