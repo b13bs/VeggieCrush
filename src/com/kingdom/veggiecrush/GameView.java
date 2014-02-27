@@ -129,7 +129,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
-        	final int SWIPE_MIN_DISTANCE = (int)(0.9 * vaggieGrid.getLargeurCase());
+        	final int SWIPE_MIN_DISTANCE = (int)(0.8 * vaggieGrid.getLargeurCase());
         	
         	final int srcX = (int)e1.getX();
         	final int srcY = (int)e1.getY();
