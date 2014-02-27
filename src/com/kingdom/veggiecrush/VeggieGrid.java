@@ -44,7 +44,7 @@ public class VeggieGrid {
 			}
 		}
 		
-		while(this.verifyCombo(c)>0)
+		while(this.verifyCombo(c)[0]>0)
 		{
 			android.util.Log.i("VeggieGrid", "again");
 		}
@@ -169,7 +169,7 @@ public class VeggieGrid {
 			for (int i = 0; i < nbRows; ++i)
 			{
 				//Vérification à droite et borne
-				if(i+2<=nbRows && veggies[i][j]!=null && veggies[i+1][j]!=null && veggies[i][j].kind == veggies[i+1][j].kind )
+				if(i+2<=nbRows && veggies[i][j].destroy == false && veggies[i+1][j].destroy == false && veggies[i][j].kind == veggies[i+1][j].kind )
 				{
 					boolean detruit = verifyDestroy(i, j, Direction.RIGHT);
 					detruitLegume |= detruit;
@@ -177,9 +177,11 @@ public class VeggieGrid {
 				}
 				
 				//Vérification en bas et borne
-				if(j+2<=nbColumns && veggies[i][j]!=null && veggies[i][j+1]!=null && veggies[i][j].kind == veggies[i][j+1].kind )
+				if(j+2<=nbColumns && veggies[i][j].destroy == false && veggies[i][j+1].destroy == false  && veggies[i][j].kind == veggies[i][j+1].kind )
 				{
-					detruitLegume |= verifyDestroy(i, j, Direction.DOWN);
+					boolean detruit = verifyDestroy(i, j, Direction.DOWN);
+					detruitLegume |= detruit;
+					nbChaineDetruite = detruit ? nbChaineDetruite+1 : nbChaineDetruite;
 				}
 			}
 		}

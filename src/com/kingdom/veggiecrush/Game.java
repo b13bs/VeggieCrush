@@ -337,10 +337,11 @@ public class Game extends Activity implements OnClickListener, MoveListener
 		// On change de place
 		veggieGrid.switchPlace(index, index2);
 		
-		int nbLegumeDetruit = veggieGrid.verifyCombo(getApplicationContext()) ;
-		if (nbLegumeDetruit > 0)
+		int tableauDestruction[] = veggieGrid.verifyCombo(getApplicationContext()) ;
+		if (tableauDestruction[0] > 0)
 		{
-			onCrush(nbLegumeDetruit);
+			onCrush(tableauDestruction[0], tableauDestruction[1] );
+			onChaine(tableauDestruction[1]);
 			// On décrémente le compteur de déplacements
 			if (mode == GameMode.BLITZ)
 			{
@@ -351,10 +352,13 @@ public class Game extends Activity implements OnClickListener, MoveListener
 					gameOver();
 				}
 			}
-			while((nbLegumeDetruit = veggieGrid.verifyCombo(getApplicationContext()))>0)
+			do
 			{
-				onCrush(nbLegumeDetruit);
-			}
+				tableauDestruction = veggieGrid.verifyCombo(getApplicationContext());
+				onCrush(tableauDestruction[0], tableauDestruction[1]);
+				onChaine(tableauDestruction[1]);
+			}while(tableauDestruction[0]>0);
+			
 			if (Settings.isSoundOn(this))
 			{
 				soundPool.play(crushSoundId, 1.0f, 1.0f, 1, 0, 1.0f);
@@ -369,21 +373,19 @@ public class Game extends Activity implements OnClickListener, MoveListener
 	
 	
 	// Fonction qui augmente le score selon le nombre d'items combinés
-	public void onCrush(int nbItemsCrushed)
+	public void onCrush(int nbItemsCrushed, int nbChaine)
 	{
 		// 100 points pour chaine de 3 + 50 points par pierre supplémentaire
-		score += 100;
-		if (nbItemsCrushed > 3)
-		{
-			score += 50 * (nbItemsCrushed - 3);
-		}
+		score += 100*nbChaine;
+		score += 50 * (nbItemsCrushed - nbChaine*3);	
 		txtScore.setText("" + score);
 	}
 
 	// Fontion qui incrémente le nombre de chaines réalisées
-	public void onChaine()
+	public void onChaine(int nbChaine)
 	{
-		txtChaines.setText("" + (++chaines));
+		chaines += nbChaine;
+		txtChaines.setText("" + chaines);
 	}	
 	
 	
