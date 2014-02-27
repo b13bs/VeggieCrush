@@ -26,7 +26,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private GestureDetector gestDetector;
 	private Paint paint;
 	
-	private boolean actionEnCours = false;
+	private volatile boolean actionEnCours = false;
 	
 	private VeggieGrid vaggieGrid;
 	
@@ -114,15 +114,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		if (!actionEnCours)
 		{
 			gestDetector.onTouchEvent(e);
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 
 	// Classe privée dont on se sert pour détecter les gestes de l'utilisateur
 	private class GestureListener extends SimpleOnGestureListener
 	{
-	    private static final int SWIPE_MIN_VELOCITY = 70;
+	    private static final int SWIPE_MIN_VELOCITY = 60;
 		
 	    // 'fling' est un 'swipe'
         @Override
@@ -130,53 +131,41 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
         {
         	final int SWIPE_MIN_DISTANCE = (int)(0.9 * vaggieGrid.getLargeurCase());
         	
-        	int srcX = (int)e1.getX();
-        	int srcY = (int)e1.getY();
-        	int dstX = (int)e2.getX();
-        	int dstY = (int)e2.getY();
+        	final int srcX = (int)e1.getX();
+        	final int srcY = (int)e1.getY();
+        	final int dstX = (int)e2.getX();
+        	final int dstY = (int)e2.getY();
+        	
+        	Direction dir = Direction.NONE;
         	
         	// En fonction de la position de départ et d'arrivé, on détermine la direction du 'swipe'
         	// En fonction de la distance et de la vélocité, on détermine si le 'swipe' est accepté
-            if (srcX - dstX > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_MIN_VELOCITY)
-            {
-            	actionEnCours = true;
-            	for (MoveListener l : listeners)
-            	{
-            		l.onSwipe(Direction.LEFT, new Point(srcX, srcY));
-            	}
-            	actionEnCours = false;
-                return true;
-            } 
-            else if (dstX - srcX > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_MIN_VELOCITY)
-            {
-            	actionEnCours = true;
-            	for (MoveListener l : listeners)
-            	{
-            		l.onSwipe(Direction.RIGHT, new Point(srcX, srcY));
-            	}
-            	actionEnCours = false;
-                return true;
-            }
-
             if (srcY - dstY > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_MIN_VELOCITY)
             {
-            	actionEnCours = true;
-            	for (MoveListener l : listeners)
-            	{
-            		l.onSwipe(Direction.UP, new Point(srcX, srcY));
-            	}
-            	actionEnCours = false;
-                return true;
+            	dir = Direction.UP;
             }
             else if (dstY - srcY > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_MIN_VELOCITY)
             {
-            	actionEnCours = true;
-            	for (MoveListener l : listeners)
-            	{
-            		l.onSwipe(Direction.DOWN, new Point(srcX, srcY));
-            	}
-            	actionEnCours = false;
-                return true;
+            	dir = Direction.DOWN;
+            }
+            
+            if (srcX - dstX > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_MIN_VELOCITY)
+            {
+            	dir = Direction.LEFT;
+            } 
+            else if (dstX - srcX > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_MIN_VELOCITY)
+            {
+            	dir = Direction.RIGHT;
+            }
+            
+            if (dir != Direction.NONE)
+            {
+	        	actionEnCours = true;
+	        	for (MoveListener l : listeners)
+	        	{
+	        		l.onSwipe(dir, new Point(srcX, srcY));
+	        	}
+	        	actionEnCours = false;
             }
             
             return false;

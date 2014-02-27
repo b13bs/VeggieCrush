@@ -7,12 +7,14 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.AudioManager;
+import android.media.SoundPool;
 
 import com.kingdom.veggiecrush.Veggie.VeggieKind;
 
 public class VeggieGrid {
 
-	public static enum Direction { LEFT, RIGHT, UP, DOWN };
+	public static enum Direction { LEFT, RIGHT, UP, DOWN, NONE };
 	
 	private static final int MOVING_STEPS = 8;
 
@@ -22,14 +24,22 @@ public class VeggieGrid {
 	private int gridWidth;
 	private int gridHeight;
 	
+	private Context context;
+	private SoundPool soundPool;
+	private int crushSoundId;
 	
-	public VeggieGrid(int nbColumns, int nbRows, int gridWidth, int gridHeight)
+	public VeggieGrid(Context c, int nbColumns, int nbRows, int gridWidth, int gridHeight)
 	{
+		this.context = c;
 		this.nbColumns = nbColumns;
 		this.nbRows = nbRows;
 		this.gridWidth = gridWidth;
 		this.gridHeight = gridHeight;
 		veggies = new Veggie[nbColumns][nbRows];
+		
+		// On créé un media player pour les effets sonores des légumes
+		soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+		crushSoundId = soundPool.load(context, R.raw.sound_crunch, 1);
 	}
 	
 	// Fonction qui initialise la grille de jeu avec des items placés aléatoirement
@@ -44,11 +54,11 @@ public class VeggieGrid {
 			}
 		}
 		
-		while(this.verifyCombo(c)>0)
+		// On détruit les combos tant q'il y en a
+		while (verifyCombo(c, false)[0] > 0)
 		{
-			android.util.Log.i("VeggieGrid", "again");
+			android.util.Log.i("VeggieGrid", "init combo");
 		}
-		
 	}
 	
 	// Fontion qui retourne la position dans la grille à partir d'une position en pixel
@@ -78,7 +88,7 @@ public class VeggieGrid {
 	}
 	
 	
-	// Fonction qui recoit les positions de 2 items dans le grille et les inverse graduellement avec une animation
+	// Fonction qui recoit les positions de 2 items dans la grille et les inverse graduellement avec une animation
 	public void switchPlace(Point i1, Point i2)
 	{
 		Veggie veg1 = veggies[i1.x][i1.y];
@@ -92,37 +102,23 @@ public class VeggieGrid {
 			int stepSize = (int)(movingDistance / (float)MOVING_STEPS);
 			while ( Math.abs(veg1.offsetPos.x) < movingDistance )
 			{
-				if (moveVeg1Right)
-				{
-					veg1.offsetPos.x += stepSize;
-					veg2.offsetPos.x -= stepSize;
-				}
-				else
-				{
-					veg1.offsetPos.x -= stepSize;
-					veg2.offsetPos.x += stepSize;
-				}
+				veg1.offsetPos.x += (moveVeg1Right ? stepSize : -stepSize);
+				veg2.offsetPos.x -= (moveVeg1Right ? stepSize : -stepSize);
+				
 				try { Thread.sleep(GameView.REFRESH_RATE_MS); } catch (InterruptedException e) { e.printStackTrace();	}
 			}
 		}
 		else if (i1.x == i2.x)
 		{
 			//déplacement vertical
-			boolean moveVeg1Down = i1.y < i2.y;
+			boolean moveVeg1Up = i1.y > i2.y;
 			int movingDistance = getHauteurCase();
 			int stepSize = (int)(movingDistance / (float)MOVING_STEPS);
 			while ( Math.abs(veg1.offsetPos.y) < movingDistance )
 			{
-				if (moveVeg1Down)
-				{
-					veg1.offsetPos.y += stepSize;
-					veg2.offsetPos.y -= stepSize;
-				}
-				else
-				{
-					veg1.offsetPos.y -= stepSize;
-					veg2.offsetPos.y += stepSize;
-				}
+				veg1.offsetPos.y += (moveVeg1Up ? -stepSize : stepSize);
+				veg2.offsetPos.y -= (moveVeg1Up ? -stepSize : stepSize);
+				
 				try { Thread.sleep(GameView.REFRESH_RATE_MS); } catch (InterruptedException e) { e.printStackTrace();	}
 			}
 		}
@@ -137,6 +133,60 @@ public class VeggieGrid {
 	}
 	
 	
+	// Fonction qui recoit une rangée et inverse tous les légumes 'destroyed' avec leur voisin du haut graduellement avec une animation
+	private void switchDestroyedUp(int row, boolean animate)
+	{
+		// En premier on s'assure qu'il existe des veggies détruits
+		boolean workToDo = true;
+		for (int i = 0; i < nbColumns; ++i)
+		{
+			if (veggies[i][row].isDestroyed && !veggies[i][row-1].isDestroyed)
+			{
+				workToDo = true;
+				break;
+			}
+		}
+		
+		if (workToDo)
+		{
+			// On les switch!
+			int row2 = row-1;
+			if (animate)
+			{
+				int movingDistance = getHauteurCase();
+				int stepSize = (int)(movingDistance / (float)MOVING_STEPS);
+				int offset = 0;
+				while ( offset < movingDistance )
+				{
+					for (int i = 0; i < nbColumns; ++i)
+					{
+						if (veggies[i][row].isDestroyed)
+						{
+							veggies[i][row].offsetPos.y -= stepSize;
+							veggies[i][row2].offsetPos.y += stepSize;
+						}
+					}
+					offset += stepSize;
+					try { Thread.sleep(GameView.REFRESH_RATE_MS / 2); } catch (InterruptedException e) { e.printStackTrace();	}
+				}
+			}
+			
+			// Déplacement terminé, on change les références dans la grille et met les offset à 0
+			for (int i = 0; i < nbColumns; ++i)
+			{
+				if (veggies[i][row].isDestroyed)
+				{
+					veggies[i][row].offsetPos.y = 0;
+					veggies[i][row2].offsetPos.y = 0;
+					Veggie tmp = veggies[i][row];
+					veggies[i][row] = veggies[i][row2];
+					veggies[i][row2] = tmp;
+				}
+			}
+		}
+	}
+	
+	
 	// Affiche tous les items de la grille sur un canvas recu en paramètre
 	public void drawVeggiesToCanvas(Canvas c, Paint p)
 	{
@@ -147,7 +197,7 @@ public class VeggieGrid {
 			{
 				for (int i = 0; i < nbColumns; ++i)
 				{
-					if (veggies[i][j] != null)
+					if (veggies[i][j] != null && !veggies[i][j].isDestroyed)
 					{
 						drawRectangle = getRectFromIndex(i, j);
 						drawRectangle.offset(veggies[i][j].offsetPos.x, veggies[i][j].offsetPos.y);
@@ -158,18 +208,20 @@ public class VeggieGrid {
 		}
 	}
 	
-	public int[] verifyCombo(Context c)
+	
+	public int[] verifyCombo(Context c, boolean animate)
 	{
 		boolean detruitLegume = false;
 		int nbLegumeDetruit = 0;
 		int nbChaineDetruite = 0;
+		
 		// On parcours la grille avec les légumes
-		for (int j = 0; j < nbColumns; ++j)
+		for (int j = 0; j < nbRows; ++j)
 		{
-			for (int i = 0; i < nbRows; ++i)
+			for (int i = 0; i < nbColumns; ++i)
 			{
 				//Vérification à droite et borne
-				if(i+2<=nbRows && veggies[i][j]!=null && veggies[i+1][j]!=null && veggies[i][j].kind == veggies[i+1][j].kind )
+				if (i+2 <= nbColumns && veggies[i][j].kind == veggies[i+1][j].kind )
 				{
 					boolean detruit = verifyDestroy(i, j, Direction.RIGHT);
 					detruitLegume |= detruit;
@@ -177,61 +229,69 @@ public class VeggieGrid {
 				}
 				
 				//Vérification en bas et borne
-				if(j+2<=nbColumns && veggies[i][j]!=null && veggies[i][j+1]!=null && veggies[i][j].kind == veggies[i][j+1].kind )
+				if (j+2 <= nbRows && veggies[i][j].kind == veggies[i][j+1].kind )
 				{
 					detruitLegume |= verifyDestroy(i, j, Direction.DOWN);
 				}
 			}
 		}
-		if(detruitLegume)
-			nbLegumeDetruit = updateGrid(c);
+		
+		if (detruitLegume)
+		{
+			if (animate && Settings.isSoundOn(context))
+			{
+				soundPool.play(crushSoundId, 1.0f, 1.0f, 1, 0, 1.0f);
+			}
+			nbLegumeDetruit = updateGrid(c, animate);
+		}
+		
 		return new int[]{nbLegumeDetruit, nbChaineDetruite};
 	}
 	
-	public int updateGrid(Context c)
+	
+	private int updateGrid(Context c, boolean animate)
 	{
 		int nbLegumeDetruit = 0;
-		// On parcours à l'envers pour trouver les null
 		Random rand = new Random();
-		for (int j = nbRows-1 ; j > 0; --j)
-		{
-			for (int i = nbColumns-1; i >= 0; --i) //On ne vérifie pas la dernière ligne en i pour remettre des legumes
-			{
-				if(veggies[i][j].destroy == true)
-				{
-					for(int m = j-1; m>=0; --m)
-					{
-						if(veggies[i][m].destroy == false)
-						{
-							veggies[i][j] = new Veggie(c, veggies[i][m].kind); 
-							veggies[i][m].destroy = true;
-							android.util.Log.i("update", "i: "+ i + " j: " + j + " Up Veggie ");
-							break;
-						}
-					}
-					if(veggies[i][j].destroy == true)
-					{
-						veggies[i][j] = new Veggie(c, VeggieKind.values()[rand.nextInt(VeggieKind.values().length)]);
-						nbLegumeDetruit += 1;
-						android.util.Log.i("update", "i: "+ i + " j: " + j + " New Veggie ");
-						
-					}
-				}
-			}
-		}
 		
-		for(int i = 0; i < nbColumns; ++i)
+		while (existsDestroyedInGrid())
 		{
-			if(veggies[i][0].destroy == true)
+			// On parcours à partir du bas et swap jusqu'à avoir les légumes détruits au top
+			for (int j = nbRows-1; j > 0; --j) //On ne vérifie pas la ligne 0 en j pour mettre de nouveaux legumes
 			{
-				veggies[i][0] = new Veggie(c, VeggieKind.values()[rand.nextInt(VeggieKind.values().length)]);
-				nbLegumeDetruit += 1;
-				android.util.Log.i("update", "i: "+ i + " j: 0" + " New Veggie ");
+				switchDestroyedUp(j, animate);
+			}
+			
+			// Maintenant on met des nouveaux légumes sur la première rangée
+			for (int i = 0; i < nbColumns; ++i)
+			{
+				if (veggies[i][0].isDestroyed == true)
+				{
+					veggies[i][0] = new Veggie(c, VeggieKind.values()[rand.nextInt(VeggieKind.values().length)]);
+					nbLegumeDetruit += 1;
+				}
 			}
 		}
 		
 		return nbLegumeDetruit;
 	}
+	
+	
+	private boolean existsDestroyedInGrid()
+	{
+		for (int j = 0; j < nbRows; ++j)
+		{
+			for (int i = 0; i < nbColumns; ++i)
+			{
+				if (veggies[i][j].isDestroyed)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	
 	private boolean verifyDestroy(int posx, int posy, Direction direction )
 	{
@@ -254,7 +314,7 @@ public class VeggieGrid {
 			{
 				for (int m = 0; m <= detruire+1; ++m)
 				{
-					veggies[posx-m][posy].destroy = true;
+					veggies[posx-m][posy].isDestroyed = true;
 					detruitLegume = true;
 				}
 			}
@@ -275,7 +335,7 @@ public class VeggieGrid {
 			{
 				for (int m = 0; m <= detruire+1; ++m)
 				{
-					veggies[posx+m][posy].destroy = true;
+					veggies[posx+m][posy].isDestroyed = true;
 					detruitLegume = true;
 				}
 			}	
@@ -296,7 +356,7 @@ public class VeggieGrid {
 			{
 				for (int m = 0; m <= detruire+1; ++m)
 				{
-					veggies[posx][posy-m].destroy = true;
+					veggies[posx][posy-m].isDestroyed = true;
 					detruitLegume = true;
 				}
 			}
@@ -317,7 +377,7 @@ public class VeggieGrid {
 			{
 				for (int m = 0; m <= detruire+1; ++m)
 				{
-					veggies[posx][posy+m].destroy = true;
+					veggies[posx][posy+m].isDestroyed = true;
 					detruitLegume = true;
 				}
 			}
