@@ -43,6 +43,12 @@ public class VeggieGrid {
 				veggies[i][j] = new Veggie(c, VeggieKind.values()[rand.nextInt(VeggieKind.values().length)]);
 			}
 		}
+		
+		while(this.verifyCombo(c)>0)
+		{
+			android.util.Log.i("VeggieGrid", "again");
+		}
+		
 	}
 	
 	// Fontion qui retourne la position dans la grille à partir d'une position en pixel
@@ -152,5 +158,174 @@ public class VeggieGrid {
 		}
 	}
 	
+	public int[] verifyCombo(Context c)
+	{
+		boolean detruitLegume = false;
+		int nbLegumeDetruit = 0;
+		int nbChaineDetruite = 0;
+		// On parcours la grille avec les légumes
+		for (int j = 0; j < nbColumns; ++j)
+		{
+			for (int i = 0; i < nbRows; ++i)
+			{
+				//Vérification à droite et borne
+				if(i+2<=nbRows && veggies[i][j]!=null && veggies[i+1][j]!=null && veggies[i][j].kind == veggies[i+1][j].kind )
+				{
+					boolean detruit = verifyDestroy(i, j, Direction.RIGHT);
+					detruitLegume |= detruit;
+					nbChaineDetruite = detruit ? nbChaineDetruite+1 : nbChaineDetruite;
+				}
+				
+				//Vérification en bas et borne
+				if(j+2<=nbColumns && veggies[i][j]!=null && veggies[i][j+1]!=null && veggies[i][j].kind == veggies[i][j+1].kind )
+				{
+					detruitLegume |= verifyDestroy(i, j, Direction.DOWN);
+				}
+			}
+		}
+		if(detruitLegume)
+			nbLegumeDetruit = updateGrid(c);
+		return new int[]{nbLegumeDetruit, nbChaineDetruite};
+	}
 	
+	public int updateGrid(Context c)
+	{
+		int nbLegumeDetruit = 0;
+		// On parcours à l'envers pour trouver les null
+		Random rand = new Random();
+		for (int j = nbRows-1 ; j > 0; --j)
+		{
+			for (int i = nbColumns-1; i >= 0; --i) //On ne vérifie pas la dernière ligne en i pour remettre des legumes
+			{
+				if(veggies[i][j].destroy == true)
+				{
+					for(int m = j-1; m>=0; --m)
+					{
+						if(veggies[i][m].destroy == false)
+						{
+							veggies[i][j] = new Veggie(c, veggies[i][m].kind); 
+							veggies[i][m].destroy = true;
+							android.util.Log.i("update", "i: "+ i + " j: " + j + " Up Veggie ");
+							break;
+						}
+					}
+					if(veggies[i][j].destroy == true)
+					{
+						veggies[i][j] = new Veggie(c, VeggieKind.values()[rand.nextInt(VeggieKind.values().length)]);
+						nbLegumeDetruit += 1;
+						android.util.Log.i("update", "i: "+ i + " j: " + j + " New Veggie ");
+						
+					}
+				}
+			}
+		}
+		
+		for(int i = 0; i < nbColumns; ++i)
+		{
+			if(veggies[i][0].destroy == true)
+			{
+				veggies[i][0] = new Veggie(c, VeggieKind.values()[rand.nextInt(VeggieKind.values().length)]);
+				nbLegumeDetruit += 1;
+				android.util.Log.i("update", "i: "+ i + " j: 0" + " New Veggie ");
+			}
+		}
+		
+		return nbLegumeDetruit;
+	}
+	
+	private boolean verifyDestroy(int posx, int posy, Direction direction )
+	{
+		boolean detruitLegume = false;
+		int detruire = 0;
+		switch (direction) {
+		case LEFT:
+			for (int k = posx-2; k > 0; --k)
+			{
+				if(veggies[k][posy].kind == veggies[posx][posy].kind)
+				{
+					detruire +=1;
+				}
+				else 
+				{
+					break;
+				}
+			}
+			if(detruire>=1)
+			{
+				for (int m = 0; m <= detruire+1; ++m)
+				{
+					veggies[posx-m][posy].destroy = true;
+					detruitLegume = true;
+				}
+			}
+			break;
+		case RIGHT:
+			for (int k = posx+2; k < nbRows; ++k)
+			{
+				if(veggies[k][posy].kind == veggies[posx][posy].kind)
+				{
+					detruire +=1;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if(detruire>=1)
+			{
+				for (int m = 0; m <= detruire+1; ++m)
+				{
+					veggies[posx+m][posy].destroy = true;
+					detruitLegume = true;
+				}
+			}	
+			break;
+		case UP:
+			for (int k = posy-2; k > 0; --k)
+			{
+				if(veggies[posx][k].kind == veggies[posx][posy].kind)
+				{
+					detruire +=1;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if(detruire>=1)
+			{
+				for (int m = 0; m <= detruire+1; ++m)
+				{
+					veggies[posx][posy-m].destroy = true;
+					detruitLegume = true;
+				}
+			}
+			break;
+		case DOWN:
+			for (int k = posy+2; k < nbColumns; ++k)
+			{
+				if(veggies[posx][k].kind == veggies[posx][posy].kind)
+				{
+					detruire +=1;
+				}
+				else
+				{
+					break;
+				}
+			}
+			if(detruire>=1)
+			{
+				for (int m = 0; m <= detruire+1; ++m)
+				{
+					veggies[posx][posy+m].destroy = true;
+					detruitLegume = true;
+				}
+			}
+			break;
+
+		default:
+			break;
+		}
+		return detruitLegume;
+	}
 }

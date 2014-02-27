@@ -13,9 +13,12 @@ public class Veggie {
 	Bitmap bitmap;
 	Rect bitmapRect;
 	Point offsetPos;
+	boolean destroy;
 	
 	public Veggie (Context c, VeggieKind kind)
 	{
+		this.kind = kind;
+		this.destroy = false;
 		// Assigner le bon bitmap en fonction deu type de légume recu
 		switch (kind)
 		{

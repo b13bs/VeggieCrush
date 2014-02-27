@@ -9,6 +9,8 @@ import com.kingdom.veggiecrush.VeggieGrid.Direction;
 import com.kingdom.veggiecrush.R.string;
 import com.kingdom.veggiecrush.Settings.GameMode;
 
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Display;
@@ -43,6 +45,9 @@ public class Game extends Activity implements OnClickListener, MoveListener
 	private int chaines = 0;
 	
 	private VeggieGrid veggieGrid;
+	
+	private SoundPool soundPool;
+	private int crushSoundId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +101,10 @@ public class Game extends Activity implements OnClickListener, MoveListener
 		
 		// On l'assigne au GameView
 		gv.setGameGrid(veggieGrid);
+		
+		// On créé un media player pour les effets sonores
+		soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+		crushSoundId = soundPool.load(this, R.raw.sound_crunch, 1);
 		
 		// On reset le tout!
 		resetGame();
@@ -325,12 +334,13 @@ public class Game extends Activity implements OnClickListener, MoveListener
 		}
 		
 		// On vérifie si le déplacement est valide (au moins 3 en ligne)
-		// TODO: !!!
-		if (true)
+		// On change de place
+		veggieGrid.switchPlace(index, index2);
+		
+		int nbLegumeDetruit = veggieGrid.verifyCombo(getApplicationContext()) ;
+		if (nbLegumeDetruit > 0)
 		{
-			// On change de place
-			veggieGrid.switchPlace(index, index2);
-			
+			onCrush(nbLegumeDetruit);
 			// On décrémente le compteur de déplacements
 			if (mode == GameMode.BLITZ)
 			{
@@ -341,9 +351,20 @@ public class Game extends Activity implements OnClickListener, MoveListener
 					gameOver();
 				}
 			}
-			
-			// TODO: badaboom crusher toute
+			while((nbLegumeDetruit = veggieGrid.verifyCombo(getApplicationContext()))>0)
+			{
+				onCrush(nbLegumeDetruit);
+			}
+			if (Settings.isSoundOn(this))
+			{
+				soundPool.play(crushSoundId, 1.0f, 1.0f, 1, 0, 1.0f);
+			}
 		}
+		else
+		{
+			veggieGrid.switchPlace(index, index2);
+		}
+		
 	}
 	
 	
