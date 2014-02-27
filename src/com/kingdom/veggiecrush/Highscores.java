@@ -3,6 +3,8 @@ package com.kingdom.veggiecrush;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -96,6 +98,7 @@ public class Highscores extends Activity implements OnClickListener {
 		editor.commit();
 	}
 	
+	@SuppressWarnings({ "unchecked", "unused" })
 	public void populateHighScores() throws JSONException {
 		SharedPreferences sharedPref = this.getSharedPreferences("com.kingdom.veggiecrush", Context.MODE_PRIVATE);
 		String strJson = sharedPref.getString("highScores", null);
@@ -104,13 +107,17 @@ public class Highscores extends Activity implements OnClickListener {
         PriorityQueue<PlayerScore> queue = new PriorityQueue<PlayerScore>(5, comparator);
         
 		JSONObject jsonData = new JSONObject(strJson);
-		
-		String[] players = {"player1", "player2", "player3", "player4", "player5"};
-		
-		for(int i = 0; i < jsonData.length(); i++) {
-			PlayerScore ps = new PlayerScore(jsonData.getJSONObject(players[i]).getString("name"), jsonData.getJSONObject(players[i]).getString("score"));
-			queue.add(ps);	
+		for(Iterator<String> iter = jsonData.keys(); iter.hasNext();) {
+		    String key = iter.next();
+		    PlayerScore ps = new PlayerScore(jsonData.getJSONObject(key).getString("name"), jsonData.getJSONObject(key).getString("score"));
+		    queue.add(ps);
 		}
+		
+		/* String[] players = {"player1", "player2", "player3", "player4", "player5"};
+		   for(int i = 0; i < jsonData.length(); i++) {
+		   PlayerScore ps = new PlayerScore(jsonData.getJSONObject(players[i]).getString("name"), jsonData.getJSONObject(players[i]).getString("score"));
+		   queue.add(ps);	
+		}*/
 		
 		Iterator<PlayerScore> it = queue.iterator();
 		TextView nameView;
@@ -119,9 +126,7 @@ public class Highscores extends Activity implements OnClickListener {
 		int idScores[] = {R.id.scoresScore1, R.id.scoresScore2, R.id.scoresScore3, R.id.scoresScore4, R.id.scoresScore5};
 		
 		int cpt = 0;
-		//while (it.hasNext()) {
 		while(!queue.isEmpty()) {
-			//PlayerScore ps = (PlayerScore) it.next();
 			PlayerScore ps = queue.poll();
 			nameView = (TextView) findViewById(idNames[cpt]);
 			nameView.setText(ps.name);
@@ -147,19 +152,8 @@ public class Highscores extends Activity implements OnClickListener {
 	public class PlayerScoreComparator implements Comparator<PlayerScore>{
 	    @Override
 	    public int compare(PlayerScore x, PlayerScore y) {
-	    	//int x_int = Integer.parseInt(x.score);
-	    	//int y_int = Integer.parseInt(y.score);
 	    	return Integer.valueOf(Integer.parseInt(y.score)).compareTo(Integer.parseInt(x.score));
-	        /*if (x_int < y_int) {
-	            return -1;
-	        }
-	        if (x_int > y_int) {
-	            return 1;
-	        }
-	        return 0;*/
 	    }
 	}
-	
-	
 	
 }

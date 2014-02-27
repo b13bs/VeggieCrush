@@ -1,5 +1,10 @@
 package com.kingdom.veggiecrush;
 
+import java.util.Iterator;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.kingdom.veggiecrush.VeggieGrid.Direction;
 import com.kingdom.veggiecrush.R.string;
 import com.kingdom.veggiecrush.Settings.GameMode;
@@ -14,8 +19,11 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Point;
 
 public class Game extends Activity implements OnClickListener, MoveListener
@@ -242,6 +250,18 @@ public class Game extends Activity implements OnClickListener, MoveListener
 	// Affiche un dialogue indiquant que la partie est terminée et redirige vers l'écran des scores
 	private void gameOver()
 	{
+		// LOG LE SCORE
+		SharedPreferences prefs = this.getSharedPreferences("com.kingdom.veggiecrush", Context.MODE_PRIVATE);
+		Editor editor = prefs.edit();
+		editor.putString("highScores","{\"player5\":{\"name\":\"joueurA\",\"score\":\"200\"},\"player4\":{\"name\":\"joueurB\",\"score\":\"400\"},\"player3\":{\"name\":\"joueurC\",\"score\":\"300\"},\"player2\":{\"name\":\"joueurD\",\"score\":\"100\"},\"player1\":{\"name\":\"joueurE\",\"score\":\"5000\"}}");
+		editor.commit();
+		
+		SharedPreferences sharedPref = this.getSharedPreferences("com.kingdom.veggiecrush", Context.MODE_PRIVATE);
+		String strJson = sharedPref.getString("highScores", null);
+		JSONObject jsonData;
+		
+		
+		// Fin du logging du score
 		gameOver = true;
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
