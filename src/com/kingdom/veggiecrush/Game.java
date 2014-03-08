@@ -1,7 +1,5 @@
 package com.kingdom.veggiecrush;
 
-import java.util.Iterator;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,8 +7,6 @@ import com.kingdom.veggiecrush.VeggieGrid.Direction;
 import com.kingdom.veggiecrush.R.string;
 import com.kingdom.veggiecrush.Settings.GameMode;
 
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Display;
@@ -46,9 +42,6 @@ public class Game extends Activity implements OnClickListener, MoveListener
 	
 	private VeggieGrid veggieGrid;
 	
-	private SoundPool soundPool;
-	private int crushSoundId;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,7 +58,7 @@ public class Game extends Activity implements OnClickListener, MoveListener
 		String name = (String) getIntent().getExtras().get(Settings.EXTRA_PLAYER_NAME);
 		
 		// On affiche le bon texte en conséquences
-		TextView txtMode = (TextView) findViewById(R.id.TxtMode);
+		TextView txtMode = (TextView) findViewById(R.id.txtMode);
 		TextView txtTexteRestant = (TextView) findViewById(R.id.txtTexteRestant);
 		if(mode == GameMode.TIME_ATTACK)
 		{
@@ -97,14 +90,10 @@ public class Game extends Activity implements OnClickListener, MoveListener
 		gv.addMoveListener(this);
 		
 		// On crée la grille de légumes
-		veggieGrid = new VeggieGrid(8, 8, gameSize, gameSize);
+		veggieGrid = new VeggieGrid(this, 8, 8, gameSize, gameSize);
 		
 		// On l'assigne au GameView
 		gv.setGameGrid(veggieGrid);
-		
-		// On créé un media player pour les effets sonores
-		soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
-		crushSoundId = soundPool.load(this, R.raw.sound_crunch, 1);
 		
 		// On reset le tout!
 		resetGame();
@@ -333,7 +322,6 @@ public class Game extends Activity implements OnClickListener, MoveListener
 				return;
 		}
 		
-		// On vérifie si le déplacement est valide (au moins 3 en ligne)
 		// On change de place
 		veggieGrid.switchPlace(index, index2);
 		
@@ -342,6 +330,7 @@ public class Game extends Activity implements OnClickListener, MoveListener
 		{
 			onCrush(tableauDestruction[0], tableauDestruction[1] );
 			onChaine(tableauDestruction[1]);
+			
 			// On décrémente le compteur de déplacements
 			if (mode == GameMode.BLITZ)
 			{
@@ -359,13 +348,10 @@ public class Game extends Activity implements OnClickListener, MoveListener
 				onChaine(tableauDestruction[1]);
 			}while(tableauDestruction[0]>0);
 			
-			if (Settings.isSoundOn(this))
-			{
-				soundPool.play(crushSoundId, 1.0f, 1.0f, 1, 0, 1.0f);
-			}
 		}
 		else
 		{
+			// Déplacement invalide, on retourne à l'état initial
 			veggieGrid.switchPlace(index, index2);
 		}
 		
