@@ -1,8 +1,5 @@
 package com.kingdom.veggiecrush;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.kingdom.veggiecrush.VeggieGrid.Direction;
 import com.kingdom.veggiecrush.R.string;
 import com.kingdom.veggiecrush.Settings.GameMode;
@@ -17,11 +14,8 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Point;
 
 public class Game extends Activity implements OnClickListener, MoveListener
@@ -36,7 +30,7 @@ public class Game extends Activity implements OnClickListener, MoveListener
 	private TextView txtRestant;
 	private TextView txtChaines;
 	
-	private int score = 0;
+	private volatile int score = 0;
 	private int restant = 0;
 	private int chaines = 0;
 	

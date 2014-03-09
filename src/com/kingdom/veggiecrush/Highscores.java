@@ -27,7 +27,6 @@ public class Highscores extends Activity implements OnClickListener {
 
 	private GameMode modePrecedent = null;
 	
-	@SuppressWarnings("unused")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
