@@ -49,7 +49,9 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 		switchSound.setOnCheckedChangeListener(this);
 		switchSound.setChecked(Settings.isSoundOn(this));
 
-		initHighscores();
+		if(!alreadyInitHighscores()) {
+			initHighscores();
+		}
 	}
 
 
@@ -163,6 +165,17 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 		editor.putString("player5_name", "empty_entry_5");
 		editor.putString("player5_score", "-5");
 		editor.commit();
+	}
+	
+	public boolean alreadyInitHighscores() {
+		SharedPreferences sharedPref = this.getSharedPreferences("com.kingdom.veggiecrush", Context.MODE_PRIVATE);
+    	String name = sharedPref.getString("player1_name", null);
+    	String score = sharedPref.getString("player1_score", null);
+    	if((name == null && score == null) || (name == "empty_entry_1" && score == "-1")) {
+    		return false;
+    	} else {
+    		return true;
+    	}		
 	}
 
 }
