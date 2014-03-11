@@ -308,7 +308,7 @@ public class Game extends Activity implements OnClickListener, MoveListener
 		// On change de place
 		veggieGrid.switchPlace(index, index2);
 		
-		int tableauDestruction[] = veggieGrid.verifyCombo(getApplicationContext()) ;
+		int tableauDestruction[] = veggieGrid.verifyCombo(getApplicationContext(), true) ;
 		if (tableauDestruction[0] > 0)
 		{
 			onCrush(tableauDestruction[0], tableauDestruction[1] );
@@ -326,7 +326,7 @@ public class Game extends Activity implements OnClickListener, MoveListener
 			}
 			do
 			{
-				tableauDestruction = veggieGrid.verifyCombo(getApplicationContext());
+				tableauDestruction = veggieGrid.verifyCombo(getApplicationContext(), true);
 				onCrush(tableauDestruction[0], tableauDestruction[1]);
 				onChaine(tableauDestruction[1]);
 			}while(tableauDestruction[0]>0);
