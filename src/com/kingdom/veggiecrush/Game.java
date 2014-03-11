@@ -152,6 +152,7 @@ public class Game extends Activity implements OnClickListener, MoveListener
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Exit the game").setMessage("Do you really want to quit the game?");
+		builder.setCancelable(false);
 		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -187,6 +188,7 @@ public class Game extends Activity implements OnClickListener, MoveListener
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Reset the game").setMessage("Do you really want to reset the current game?");
+		builder.setCancelable(false);
 		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

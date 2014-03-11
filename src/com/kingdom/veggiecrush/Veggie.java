@@ -15,6 +15,8 @@ public class Veggie {
 	Point offsetPos;
 	boolean isDestroyed;
 	
+	// Un veggie représente un élément de la grille
+	// Il comporte un type, une image et un décalage d'affichage
 	public Veggie (Context c, VeggieKind kind)
 	{
 		this.kind = kind;
