@@ -15,6 +15,8 @@ public class Settings {
 	
 	public static final String EXTRA_PLAYER_NAME = "PLAYER_NAME";
 	
+	public static final String EXTRA_PLAYER_SCORE = "0";
+	
 	public static final String APP_OPTIONS_PREFS = "APP_OPTIONS_PREFS";
 	public static final String OPTION_SOUND = "OPTION_SOUND";
 	

@@ -17,6 +17,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 public class MainMenu extends Activity implements OnClickListener, OnCheckedChangeListener
 {
@@ -46,6 +48,10 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 		switchSound = (Switch) findViewById(R.id.switchSound);
 		switchSound.setOnCheckedChangeListener(this);
 		switchSound.setChecked(Settings.isSoundOn(this));
+
+		if(!alreadyInitHighscores()) {
+			initHighscores();
+		}
 	}
 
 
@@ -143,6 +149,33 @@ public class MainMenu extends Activity implements OnClickListener, OnCheckedChan
 				});
 	    final Dialog d = builder.create();
 	    d.show();
+	}
+	
+	public void initHighscores() {
+		SharedPreferences prefs = this.getSharedPreferences("com.kingdom.veggiecrush", Context.MODE_PRIVATE);
+		Editor editor = prefs.edit();
+		editor.putString("player1_name", "empty_entry_1");
+		editor.putString("player1_score", "-1");
+		editor.putString("player2_name", "empty_entry_2");
+		editor.putString("player2_score", "-2");
+		editor.putString("player3_name", "empty_entry_3");
+		editor.putString("player3_score", "-3");
+		editor.putString("player4_name", "empty_entry_4");
+		editor.putString("player4_score", "-4");
+		editor.putString("player5_name", "empty_entry_5");
+		editor.putString("player5_score", "-5");
+		editor.commit();
+	}
+	
+	public boolean alreadyInitHighscores() {
+		SharedPreferences sharedPref = this.getSharedPreferences("com.kingdom.veggiecrush", Context.MODE_PRIVATE);
+    	String name = sharedPref.getString("player1_name", null);
+    	String score = sharedPref.getString("player1_score", null);
+    	if((name == null && score == null) || (name == "empty_entry_1" && score == "-1")) {
+    		return false;
+    	} else {
+    		return true;
+    	}		
 	}
 
 }
