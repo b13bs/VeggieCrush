@@ -40,34 +40,38 @@ public class Highscores extends Activity implements OnClickListener {
 			Button btnOtherMode = (Button) findViewById(R.id.btnOtherMode);
 			btnOtherMode.setOnClickListener(this);
 			
-			// LOG HIGHSCORES
+			// Obtenir le nom et le pointage du joueur qui vient de terminer sa partie
 			Integer scoreGamePrec = Integer.parseInt((String) getIntent().getExtras().get(Settings.EXTRA_PLAYER_SCORE));
 			String playerName = (String) getIntent().getExtras().get(Settings.EXTRA_PLAYER_NAME);
 			
 			SharedPreferences sharedPref = this.getSharedPreferences("com.kingdom.veggiecrush", Context.MODE_PRIVATE);
 			
+			// Remplir un tableau associatif avec comme entrees le nom du joueur comme clé puis le score comme valeur
 			Map<String, Integer> map = new TreeMap<String, Integer>();
-			
 	        for(Integer i = 1; i <= 5; i++) {
 	        	String name = sharedPref.getString("player" + i.toString() + "_name", null);
 	        	Integer score = Integer.parseInt(sharedPref.getString("player" + i.toString() + "_score", null));
 	        	map.put(name, score);
 	        }	        
 		    
-	       
+	        // Algorithme d'ajout du nouveau pointage
 	        boolean newName = false;
 	        if(map.containsKey(playerName)) {
+	        	// Le score du nouveau joueur est meilleur que son ancien score
 	        	if(map.get(playerName) < scoreGamePrec) {
 	        		map.remove(playerName);
 	        		map.put(playerName, scoreGamePrec);
 	        	}
 	        } else {
+	        	// On l'ajoute à la map
 	        	newName = true;
 	        	map.put(playerName, scoreGamePrec);
 	        }
 	        
+	        // Trier la map selon un ordre des pointages decroissant
 	        Map<String, Integer> sortedMap = sortByValue(map);
 	        
+	        // Enlever le dernier joueur pour en garder seulement cinq
 	        if(newName) {
 	        	Iterator<Map.Entry<String, Integer>> iterator = sortedMap.entrySet().iterator();
 	            Map.Entry<String, Integer> lastElement = null;
@@ -80,6 +84,7 @@ public class Highscores extends Activity implements OnClickListener {
 	        SharedPreferences prefs = this.getSharedPreferences("com.kingdom.veggiecrush", Context.MODE_PRIVATE);
 			Editor editor = prefs.edit();
 	        
+			// Ecrire les joueurs dans les SharedPreferences pour les sauvegarder
 			Integer i = 1;
 	        Iterator<Map.Entry<String, Integer>> iterator = sortedMap.entrySet().iterator();
 	        Map.Entry<String, Integer> element = null;
@@ -101,9 +106,11 @@ public class Highscores extends Activity implements OnClickListener {
 		Button btnExit = (Button) findViewById(R.id.btnQuit);
 		btnExit.setOnClickListener(this);
 		
+		// Affichage des scores dans un tableau dans l'activite Highscores
 		populateHighScores();
 	}
 	
+	// Fonction qui trie le tableau en fonction des valeurs en ordre decroissant
 	@SuppressWarnings("all")
 	static Map sortByValue(Map map) {
 	     List list = new LinkedList(map.entrySet());
@@ -157,14 +164,11 @@ public class Highscores extends Activity implements OnClickListener {
 	}
 	
 	
-	
-	
-	
-	
-	
+	// Affiche les cinq meilleurs scores avec leur nom associe
 	public void populateHighScores() {    
 		SharedPreferences sharedPref = this.getSharedPreferences("com.kingdom.veggiecrush", Context.MODE_PRIVATE);
 		
+		// Cree une map pour contenir les highscores depuis les SharedPreferences
 		Map<String, Integer> map = new TreeMap<String, Integer>();
         for(Integer i = 1; i <= 5; i++) {
         	String name = sharedPref.getString("player" + i.toString() + "_name", null);
@@ -179,21 +183,25 @@ public class Highscores extends Activity implements OnClickListener {
 		
 		Map<String, Integer> sortedMap = sortByValue(map);
 		
+		// Iteration sur les Highscores dans la map
 		Iterator<Map.Entry<String, Integer>> iterator = sortedMap.entrySet().iterator();
 		Map.Entry<String, Integer> element = null;
 		int cpt = 0;
 		while (iterator.hasNext()) {
 			element = iterator.next();
-			
 			nameView = (TextView) findViewById(idNames[cpt]);
-			String abc = element.getKey().substring(0,element.getKey().length()-2);
-			if(abc.equals("empty_entry")) {
+			String name = element.getKey().substring(0,element.getKey().length()-2);
+			
+			// Si le nom est un nom par defaut d'initialisation, rien n'est affiche
+			if(name.equals("empty_entry")) {
 				nameView.setText("");
 			} else {
+				// Sinon on affiche le bon nom
 				nameView.setText(element.getKey());
 			}
 			
 			nameView = (TextView) findViewById(idScores[cpt]);
+			// Si le score est un score par defaut d'initialisation, rien n'est affiche
 			if(element.getValue() < 0) {
 				nameView.setText("");
 			} else {
@@ -204,25 +212,4 @@ public class Highscores extends Activity implements OnClickListener {
 		}
 	
 	}
-
-	public class PlayerScore {
-
-	    private String name;
-	    private String score;
-
-	    public PlayerScore(String name, String score) {
-	    	this.name = name; 
-		    this.score = score;
-	    }
-	}
-	
-	
-
-	public class PlayerScoreComparator implements Comparator<PlayerScore>{
-	    @Override
-	    public int compare(PlayerScore x, PlayerScore y) {
-	    	return Integer.valueOf(Integer.parseInt(y.score)).compareTo(Integer.parseInt(x.score));
-	    }
-	}
-	
 }
