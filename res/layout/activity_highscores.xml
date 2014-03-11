@@ -5,35 +5,6 @@
     android:background="@drawable/menu_bg"
     tools:context=".Highscores" >
 
-    <Button
-        android:id="@+id/btnOtherMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnPlayAgain"
-        android:layout_centerHorizontal="true"
-        android:text="@string/other_mode"
-        android:textColor="@color/button_text" />
-
-    <Button
-        android:id="@+id/btnPlayAgain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
-        android:layout_toLeftOf="@+id/btnOtherMode"
-        android:text="@string/play_again"
-        android:textColor="@color/button_text" />
-
-    <Button
-        android:id="@+id/btnQuit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnOtherMode"
-        android:layout_alignBottom="@+id/btnOtherMode"
-        android:layout_toRightOf="@+id/btnOtherMode"
-        android:text="@string/quit"
-        android:textColor="@color/button_text" />
-
     <TextView
         android:id="@+id/textViewScores"
         android:layout_width="wrap_content"
@@ -46,133 +17,157 @@
         android:textColor="#ffffff" />
 
     <TableLayout
+        android:id="@+id/tableLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="0.40"
         android:layout_below="@+id/textViewScores"
-        android:layout_marginTop="40dip"
-        android:padding="20dip"
+        android:layout_gravity="center"
         android:layout_margin="10dip"
-        android:stretchColumns="1"
-        android:background="@color/background_scores" >
+        android:layout_marginTop="40dip"
+        android:layout_weight="0.40"
+        android:background="@color/background_scores"
+        android:padding="20dip"
+        android:stretchColumns="1" >
 
         <TableRow
             android:id="@+id/scoresRow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-            
-            <TextView 
+
+            <TextView
                 android:id="@+id/scoresName1"
-                android:text="Default #1"
                 android:layout_column="1"
-	            android:padding="10dip"
+                android:padding="10dip"
+                android:text="Default #1"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-              	android:textColor="@color/score_text" />
+                android:textColor="@color/score_text" />
 
             <TextView
                 android:id="@+id/scoresScore1"
-                android:text="-1"
                 android:gravity="right"
-	            android:padding="10dip"
+                android:padding="10dip"
+                android:text="-1"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-              	android:textColor="@color/score_text" />
-            
+                android:textColor="@color/score_text" />
         </TableRow>
 
         <TableRow
             android:id="@+id/scoresRow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-            
-            <TextView 
+
+            <TextView
                 android:id="@+id/scoresName2"
-                android:text="Default #2"
                 android:layout_column="1"
-	            android:padding="10dip"
+                android:padding="10dip"
+                android:text="Default #2"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-              	android:textColor="@color/score_text" />
+                android:textColor="@color/score_text" />
 
             <TextView
                 android:id="@+id/scoresScore2"
-                android:text="-2"
                 android:gravity="right"
-	            android:padding="10dip"
+                android:padding="10dip"
+                android:text="-2"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-              	android:textColor="@color/score_text" />
-            
+                android:textColor="@color/score_text" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/scoresRow3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-            
-            <TextView 
+
+            <TextView
                 android:id="@+id/scoresName3"
-                android:text="Default #3"
                 android:layout_column="1"
-	            android:padding="10dip"
+                android:padding="10dip"
+                android:text="Default #3"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-              	android:textColor="@color/score_text" />
+                android:textColor="@color/score_text" />
 
             <TextView
                 android:id="@+id/scoresScore3"
-                android:text="-3"
                 android:gravity="right"
-	            android:padding="10dip"
+                android:padding="10dip"
+                android:text="-3"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-              	android:textColor="@color/score_text" />
-            
+                android:textColor="@color/score_text" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/scoresRow4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-            
-            <TextView 
+
+            <TextView
                 android:id="@+id/scoresName4"
-                android:text="Default #4"
                 android:layout_column="1"
-	            android:padding="10dip"
+                android:padding="10dip"
+                android:text="Default #4"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-              	android:textColor="@color/score_text" />
+                android:textColor="@color/score_text" />
 
             <TextView
                 android:id="@+id/scoresScore4"
-                android:text="-4"
                 android:gravity="right"
-	            android:padding="10dip"
+                android:padding="10dip"
+                android:text="-4"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-              	android:textColor="@color/score_text" />
-            
+                android:textColor="@color/score_text" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/scoresRow5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-            
-            <TextView 
+
+            <TextView
                 android:id="@+id/scoresName5"
-                android:text="Default #5"
                 android:layout_column="1"
-	            android:padding="10dip"
+                android:padding="10dip"
+                android:text="Default #5"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-              	android:textColor="@color/score_text" />
+                android:textColor="@color/score_text" />
 
             <TextView
                 android:id="@+id/scoresScore5"
-                android:text="-5"
                 android:gravity="right"
-	            android:padding="10dip"
+                android:padding="10dip"
+                android:text="-5"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-              	android:textColor="@color/score_text" />
-            
+                android:textColor="@color/score_text" />
         </TableRow>
-
-        
     </TableLayout>
+
+    <Button
+        android:id="@+id/btnQuit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
+        android:text="@string/quit"
+        android:textColor="@color/button_text" />
+
+    <Button
+        android:id="@+id/btnOtherMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnQuit"
+        android:layout_alignLeft="@+id/textViewScores"
+        android:layout_marginLeft="25dp"
+        android:text="@string/other_mode"
+        android:textColor="@color/button_text" />
+
+    <Button
+        android:id="@+id/btnPlayAgain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnQuit"
+        android:layout_alignRight="@+id/textViewScores"
+        android:layout_marginRight="46dp"
+        android:text="@string/play_again"
+        android:textColor="@color/button_text" />
 
 </RelativeLayout>
