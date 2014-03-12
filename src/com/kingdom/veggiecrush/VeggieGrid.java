@@ -214,12 +214,12 @@ public class VeggieGrid {
 		int nbLegumeDetruit = 0;
 		int nbChaineDetruite = 0;
 		
-		// On parcours la grille avec les légumes
+		// On parcours la grille avec les légumes 
 		for (int j = 0; j < nbRows; ++j)
 		{
 			for (int i = 0; i < nbColumns; ++i)
 			{
-				//Vérification à droite et borne
+				//Vérification à droite et borne pour des chaînes
 				if(i+2<=nbRows && veggies[i][j].isDestroyed == false && veggies[i+1][j].isDestroyed == false && veggies[i][j].kind == veggies[i+1][j].kind )
 				{
 					boolean detruit = verifyDestroy(i, j, Direction.RIGHT);
@@ -227,7 +227,7 @@ public class VeggieGrid {
 					nbChaineDetruite = detruit ? nbChaineDetruite+1 : nbChaineDetruite;
 				}
 				
-				//Vérification en bas et borne
+				//Vérification en bas et borne pour des chaînes
 				if(j+2<=nbColumns && veggies[i][j].isDestroyed == false && veggies[i][j+1].isDestroyed == false  && veggies[i][j].kind == veggies[i][j+1].kind )
 				{
 					boolean detruit = verifyDestroy(i, j, Direction.DOWN);
@@ -298,28 +298,8 @@ public class VeggieGrid {
 	{
 		boolean detruitLegume = false;
 		int detruire = 0;
+		//Vérification de combo vers la direction qu'une paire a déjà été trouvé
 		switch (direction) {
-		case LEFT:
-			for (int k = posx-2; k > 0; --k)
-			{
-				if(veggies[k][posy].kind == veggies[posx][posy].kind)
-				{
-					detruire +=1;
-				}
-				else 
-				{
-					break;
-				}
-			}
-			if(detruire>=1)
-			{
-				for (int m = 0; m <= detruire+1; ++m)
-				{
-					veggies[posx-m][posy].isDestroyed = true;
-					detruitLegume = true;
-				}
-			}
-			break;
 		case RIGHT:
 			for (int k = posx+2; k < nbRows; ++k)
 			{
@@ -332,6 +312,7 @@ public class VeggieGrid {
 					break;
 				}
 			}
+			//Si une chaine de plusieurs légumes a été trouvé alors les légumes sont mis dans un état à détruire
 			if(detruire>=1)
 			{
 				for (int m = 0; m <= detruire+1; ++m)
@@ -340,27 +321,6 @@ public class VeggieGrid {
 					detruitLegume = true;
 				}
 			}	
-			break;
-		case UP:
-			for (int k = posy-2; k > 0; --k)
-			{
-				if(veggies[posx][k].kind == veggies[posx][posy].kind)
-				{
-					detruire +=1;
-				}
-				else
-				{
-					break;
-				}
-			}
-			if(detruire>=1)
-			{
-				for (int m = 0; m <= detruire+1; ++m)
-				{
-					veggies[posx][posy-m].isDestroyed = true;
-					detruitLegume = true;
-				}
-			}
 			break;
 		case DOWN:
 			for (int k = posy+2; k < nbColumns; ++k)
@@ -374,6 +334,7 @@ public class VeggieGrid {
 					break;
 				}
 			}
+			//Si une chaine de plusieurs légumes a été trouvé alors les légumes sont mis dans un état à détruire
 			if(detruire>=1)
 			{
 				for (int m = 0; m <= detruire+1; ++m)
